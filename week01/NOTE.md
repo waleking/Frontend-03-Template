@@ -8,7 +8,7 @@
 2. 自己接触前端并不深，也没有很好的工作环境去深入了解前端技术，以前总是对此非常忧虑，不知道自己能对前端掌握的什么程度。
 现在有了整理法，那么就能快速了解一项技术的大体全貌，判断是否符合自己的需求，比如Electron。然后用追溯法去深入了解其中关键部分的原理，达到举一反三的目的。
 
-如果我来写一个前端开发的书，我的目录将会是下面这样，更细分的目录参见脑图：[前端技术_weijing.pdf](https://github.com/waleking/Frontend-03-Template/blob/master/week01/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF_weijing.pdf）。winter老师做了非常好的总结，我增加了框架、工程实践、专门的技术方向、重要的demo，和将前端技术运用于项目这几部分的内容。
+如果我来写一个前端开发的书，我的目录将会是下面这样，更细分的目录参见脑图：[前端技术\_weijing.pdf](https://github.com/waleking/Frontend-03-Template/blob/master/week01/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF_weijing.pdf)。winter老师做了非常好的总结，我增加了框架、工程实践、专门的技术方向、重要的demo，和将前端技术运用于项目这几部分的内容。
 - HTML
 - JavaScript
 - CSS
