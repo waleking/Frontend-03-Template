@@ -124,3 +124,33 @@ d
 ```
 
 
+
+最终，在完成`client.js`和`server.js` 之后，运行结果如下：
+```
+{
+  statusCode: '200',
+  statusText: 'OK',
+  headers: {
+    'Content-Type': 'text/html',
+    Date: 'Fri, 07 Aug 2020 05:38:43 GMT',
+    Connection: 'keep-alive',
+    'Transfer-Encoding': 'chunked'
+  },
+  body: ' hello World\n'
+}
+```
+
+## 需要搞清楚的知识点
+get 关键字
+
+async 关键字
+
+Promise
+
+resolve 能够起到return的作用？
+
+RegExp 能够取最近一次的match结果？
+
+async 关键字
+
+await 关键字

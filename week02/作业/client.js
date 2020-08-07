@@ -37,7 +37,7 @@ class Request {
             connection.on('data', (data) => { // listen to the connection's data field
                 parser.receive(data.toString());
                 if(parser.isFinished){
-                    resolve(parser.response);
+                    resolve(parser.response); // resolve also means return?
                     connection.end();
                 }
             });
@@ -74,6 +74,21 @@ class ResponseParser{
         this.headerValue = "";
         this.bodyParser = null;
     }
+
+    get isFinished(){ // the keyword get?
+        return this.bodyParser && this.bodyParser.isFinished;
+    }
+
+    get response(){
+        this.statusLine.match(/HTTP\/1.1 (\d+) (\S+)/);
+        return {
+            statusCode: RegExp.$1, //RegExp?
+            statusText: RegExp.$2,
+            headers: this.headers,
+            body: this.bodyParser.content.join('')
+        }
+    }
+
     receive(string){
         for(let i = 0; i<string.length; i++){
             this.receiveChar(string.charAt(i));
@@ -98,6 +113,9 @@ class ResponseParser{
                 this.current = this.WAITING_HEADER_SPACE;
             } else if(char === '\r'){
                 this.current = this.WAITING_HEADER_BLOCK_END;
+                if(this.headers['Transfer-Encoding'] === 'chunked'){
+                    this.bodyParser = new ChunkedBodyParser();
+                }
             } else {
                 this.headerName += char;
             }
@@ -123,7 +141,55 @@ class ResponseParser{
                 this.current = this.WAITING_BODY;
             }
         } else if(this.current === this.WAITING_BODY){
-            console.log(char);
+            this.bodyParser.receiveChar(char);
+        }
+    }
+}
+
+class ChunkedBodyParser{
+    constructor(){
+        this.WAITING_LENGTH = 0;
+        this.WAITING_LENGTH_LINE_END = 1;
+        this.READING_CHUNK = 2;
+        this.WAITING_NEW_LINE = 3;
+        this.WAITING_NEW_LINE_END = 4;
+        this.length = 0;
+        this.content = [];
+        this.isFinished = false;
+        this.current = this.WAITING_LENGTH;
+    }
+
+    receiveChar(char){
+        if(this.current === this.WAITING_LENGTH){
+            if(char === '\r'){
+                this.current = this.WAITING_LENGTH_LINE_END;
+                if(this.length === 0){
+                    this.isFinished = true;
+                }
+            } else {
+                this.length *= 16;
+                this.length += parseInt(char, 16); // base 16
+            }
+        } else if(this.current === this.WAITING_LENGTH_LINE_END){
+            if(char === '\n'){
+                this.current = this.READING_CHUNK;
+            }
+        } else if(this.current === this.READING_CHUNK){
+            if(this.length!==0){ // make sure it's volid to push a new char to the content
+                this.content.push(char);
+            }
+            if(this.content.length === this.length){
+                this.current = this.WAITING_NEW_LINE;
+                this.length = 0; //RESET for a chunk
+            }
+        } else if(this.current === this.WAITING_NEW_LINE){
+            if(char === '\r'){
+                this.current = this.WAITING_NEW_LINE_END;
+            }
+        } else if(this.current === this.WAITING_NEW_LINE_END){
+            if(char === '\n'){
+                this.current = this.WAITING_LENGTH;
+            }
         }
     }
 }
