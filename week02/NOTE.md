@@ -69,3 +69,58 @@ body:  {"query": "empty"}
 
 3. http.createServer()中debugger为什么不发挥作用？
 
+### client.js 
+关于在async IIFE之前加void，`挚爱西`有一个很好的描述：
+“在使用立即执行的函数表达式时，可以利用void 运算符让JavaScript引擎把一个function关键字识别成函数表达式而不是函数声明（语句）。”
+
+`client.js`在给Request类添加toString()方法之后，可以将HTTP请求转化为文本格式：
+```
+'POST / HTTP/1.1
+X-Foo2: customed
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 12
+
+name=weijing'
+```
+
+这时，我们的`server.js`端的输出如下，说明我们的请求已经发送到了server端。
+```
+headers:
+{
+  'x-foo2': 'customed',
+  'content-type': 'application/x-www-form-urlencoded',
+  'content-length': '12'
+}
+
+method:
+'POST'
+chunk is a kind of Buffer
+Before concat() and toString(), body:
+[
+  Buffer(12) [Uint8Array] [
+    110,  97, 109, 101,
+     61, 119, 101, 105,
+    106, 105, 110, 103
+  ]
+]
+body:  name=weijing
+```
+
+以及，服务器端返回的data可以通过data.toString()查看，d是一个16进制的数，表示13，是body字符串的长度：
+```
+HTTP/1.1 200 OK
+Content-Type: text/html
+Date: Fri, 07 Aug 2020 03:25:58 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+
+d
+ hello World
+
+0
+
+
+
+```
+
+
