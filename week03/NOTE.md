@@ -37,6 +37,10 @@ CSS Computing就是指将CSS规则添加到DOM树中。
 
 一条css rule主要由selectors，declarations组成。selectors是一个list：`body div img, #myid`会通过逗号分隔，变成两个selectors。
 
+### 添加对CSS的调用
+CSS设计里面的潜规则：尽量保证大部分的选择器在进入startTag的时候就会被判断。
+一个重要的假设：在compute css的时候，css rules已经收集完毕。在真实浏览器中，可能遇到写在body中的style标签，需要重新计算CSS，这里我们忽略这种情况。
+
 ## 作业心得
 ### 处理属性
 此处使用了状态机处理属性，但是逻辑相对于标签的处理更复杂一些。

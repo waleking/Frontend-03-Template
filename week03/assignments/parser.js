@@ -20,6 +20,11 @@ function addCSSRules(text){
     rules.push(...ast.stylesheet.rules);
 }
 
+function computeCSS(element){
+    console.log(rules);
+    console.log("Compute css for Element", element);
+}
+
 
 function emit(token){
     let top = stack[stack.length - 1];
@@ -39,6 +44,9 @@ function emit(token){
                 });
             }
         }
+
+        computeCSS(element);
+        
         // construct tree by setting parent and children
         top.children.push(element);
         element.parent = top;
