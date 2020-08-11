@@ -1,3 +1,5 @@
+const css = require("css"); // an npm package to compile css
+
 const EOF = Symbol("EOF"); // EOF: End of File
 
 let currentToken = null;
@@ -11,6 +13,12 @@ let stack = [
     }
 ];
 
+let rules = []; // css rules
+function addCSSRules(text){
+    var ast = css.parse(text);
+    console.log(JSON.stringify(ast), null, "    ");
+    rules.push(...ast.stylesheet.rules);
+}
 
 
 function emit(token){
@@ -43,6 +51,12 @@ function emit(token){
         if(top.tagName !== token.tagName){
             throw new Error("not matched!");
         } else {
+            /*****Only deal with <style> tags. It's more complex to handle <link> tags******/
+            if(top.tagName === "style"){
+                addCSSRules(top.children[0].content); // The top element has a child element whose type is text.
+            }
+
+            // Tags match, then pop out the top element.
             stack.pop();
         }
     } else if(token.type === "text"){

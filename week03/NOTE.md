@@ -30,6 +30,13 @@ DOM树中只有node和element?
 ### 将文本节点加到DOM树
 文本节点并不入栈，但是需要将文本节点挂到栈顶的chilren队列中。
 
+### 收集CSS规则 
+CSS Computing就是指将CSS规则添加到DOM树中。
+需要对CSS进行词法分析和语法分析，其中的编译原理知识略过，改用`npm install css`，其作用为将css转为AST（抽象语法树）。
+进一步降低处理的复杂程度，不考虑link标签，只考虑style标签；不考虑style标签里面的import写法（涉及到网络请求和异步处理），只考虑内联的css写法。
+
+一条css rule主要由selectors，declarations组成。selectors是一个list：`body div img, #myid`会通过逗号分隔，变成两个selectors。
+
 ## 作业心得
 ### 处理属性
 此处使用了状态机处理属性，但是逻辑相对于标签的处理更复杂一些。
