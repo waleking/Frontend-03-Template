@@ -14,6 +14,18 @@ HTML中有效的空白符有四种：制表符、换行符、禁止符、空格�
 在状态机中添加计算逻辑。
 
 ### 处理属性
+截止到目前为止，是词法分析。
+
+### 用token构建DOM树
+进入到HTML语法分析阶段。HTML的语法分析是简单的，ToyBrowser中可以用栈来处理。真正的浏览器对使用者友好，栈是不够用的。
+更为复杂的部分需要参考[12.2.6 Tree construction](https://html.spec.whatwg.org/multipage/parsing.html#tree-construction)。
+
+
+栈和树之间是有天然的联系的：“任何一个树的截面，它的父元素父元素父元素可以视作一个栈”。
+HTML中写在尖括号里面的东西是tag，其背后的抽象的东西叫element。
+DOM树中只有node和element?
+
+`top.children.push(element)`和`element.parent = top`用于建立父子关系。
 
 ## 作业心得
 ### 处理属性

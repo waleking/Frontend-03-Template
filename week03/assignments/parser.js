@@ -3,7 +3,51 @@ const EOF = Symbol("EOF"); // EOF: End of File
 let currentToken = null;
 let currentAttribute = null;
 
+let stack = [
+    {// Init a stack with the document node.
+        type: "document", //In an html file, the "document" node is the root node in the DOM tree parsed from the html file.
+        children: []
+    }
+];
+
+
+
 function emit(token){
+    if(token.type === "text"){
+        return; //TODO
+    }
+
+    let top = stack[stack.length - 1];
+    if(token.type === "startTag"){
+        let element = {
+            type: "element",
+            tagName: token.tagName,
+            parent: null,
+            children: [],
+            attributes: []
+        }
+        for(let p in token){
+            if(p !== "type" && p !== "tagName"){
+                element.attributes.push({
+                    name: p, 
+                    value: token[p]
+                });
+            }
+        }
+        // construct tree by setting parent and children
+        top.children.push(element);
+        element.parent = top;
+
+        if(!token.isSelfClosing){
+            stack.push(element);
+        } 
+    } else if(token.type === 'endTag'){
+        if(top.tagName !== token.tagName){
+            throw new Error("not matched!");
+        } else {
+            stack.pop();
+        }
+    }
     console.log(token);
 }
 
@@ -218,4 +262,5 @@ module.exports.parseHTML = function parseHTML(html){ // module.exports?
         state = state(c);
     }
     state(EOF); // force the State Machine to stop here. 
+    console.log(stack[0]);
 }
