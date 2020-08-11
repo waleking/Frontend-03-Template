@@ -41,6 +41,17 @@ CSS Computing就是指将CSS规则添加到DOM树中。
 CSS设计里面的潜规则：尽量保证大部分的选择器在进入startTag的时候就会被判断。
 一个重要的假设：在compute css的时候，css rules已经收集完毕。在真实浏览器中，可能遇到写在body中的style标签，需要重新计算CSS，这里我们忽略这种情况。
 
+### 获取父元素序列
+为什么要获取父元素序列呢？选择器大多都和父元素相关？
+
+在computeCSS函数中，我们必须知道元素的所有祖先元素才能判断元素是否与规则匹配。我们从上一步骤的stack，可以获取本元素的所有祖先元素。因为我们首先获取的是“当前元素”，所以我们进行匹配的顺序是从内到外。
+
+例如：选择器`div div #myid`中的第一个div不知道匹配哪个元素，但是#myid一定要判断是否匹配当前元素。
+
+Example 1, `div p` = Selects all <p> elements inside <div> elements
+Example 2, `div > p` = Selects all <p> elements where the parent is a <div> element
+Reference: https://www.w3schools.com/cssref/css\_selectors.asp
+
 ## 作业心得
 ### 处理属性
 此处使用了状态机处理属性，但是逻辑相对于标签的处理更复杂一些。

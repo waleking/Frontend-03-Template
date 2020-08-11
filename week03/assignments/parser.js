@@ -1,4 +1,5 @@
 const css = require("css"); // an npm package to compile css
+const { stat } = require("fs");
 
 const EOF = Symbol("EOF"); // EOF: End of File
 
@@ -23,6 +24,12 @@ function addCSSRules(text){
 function computeCSS(element){
     console.log(rules);
     console.log("Compute css for Element", element);
+    // get the parent element
+
+    // Example 1, `div p` = Selects all <p> elements inside <div> elements
+    // Example 2, `div > p` = Selects all <p> elements where the parent is a <div> element
+    // Reference: https://www.w3schools.com/cssref/css_selectors.asp
+    let elements = stack.slice().reverse();//.slice() means copy, and reverse() means doing the comaprison from inside to outside
 }
 
 
@@ -46,7 +53,7 @@ function emit(token){
         }
 
         computeCSS(element);
-        
+
         // construct tree by setting parent and children
         top.children.push(element);
         element.parent = top;
