@@ -65,7 +65,7 @@ Anything else
     Start a new attribute in the current tag token. Set that attribute name and value to the empty string. Reconsume in the attribute name state.
 ```
 
-在winter老师的演示中，一共处理了
+在winter老师的演示中，一共处理了13种状态，如下表格所示。
 
 |ToyBrowser中的状态   | 对应的html.spec.whatwg.org中的状态  |
 |---|---|
