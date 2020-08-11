@@ -1,6 +1,7 @@
 const EOF = Symbol("EOF"); // EOF: End of File
 
 let currentToken = null;
+let currentAttribute = null;
 
 function emit(token){
     console.log(token);
@@ -70,16 +71,133 @@ function tagName(c){
 function beforeAttributeName(c){
     if(c.match(/^[\t\n\f ]$/)){
         return beforeAttributeName;
-    } else if(c===">"){
-        return tagName(c);
+    } else if(c===">" || c==="/" || c===EOF){
+        return afterAttributeName(c);  //E.g., <div >, reconsume ">" in the after attribute name state.
     } else if(c==="="){
-        return beforeAttributeName; // todo prob
-    } else if(c==="/"){
-        return selfClosingStartTag;
+        // This is an unexpected-equals-sign-before-attribute-name parse error. 
     } else {
-        return beforeAttributeName;
+        currentAttribute = {
+            name: "",
+            value: ""
+        }
+        return attributeName(c);
     }
 }
+
+function attributeName(c){
+    if(c.match(/^[\t\n\f ]$/) || c===">" || c==="/" || c===EOF){
+        return afterAttributeName(c);
+    } else if(c==="="){
+        return beforeAttributeValue;
+    } else if(c==="\u0000"){//\u0000?
+    } else if(c==='"' || c==="'" || c==="<"){
+    }{
+        currentAttribute.name += c;
+        return attributeName;
+    }
+}
+
+function beforeAttributeValue(c){
+    if(c.match(/^[\t\n\f ]$/) ){ //ignore the white spaces
+        return beforeAttributeValue; //ignore the white spaces
+    } else if(c === "\""){
+        return doubleQuotedAttributeValue;
+    } else if(c === "\'"){
+        return singleQuotedAttributeValue;
+    } else if(c === ">"){
+
+    } else {
+        return unquotedAttributeValue(c);
+    }
+}
+
+function doubleQuotedAttributeValue(c){
+    if(c === "\""){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        return afterQuotedAttributeValue;
+    } else if(c === "\u0000"){
+
+    } else if(c === EOF){
+
+    } else {
+        currentAttribute.value += c;
+        return doubleQuotedAttributeValue;
+    }
+}
+
+function singleQuotedAttributeValue(c){
+    if(c === "\'"){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        return afterQuotedAttributeValue;
+    } else if(c === "\u0000"){
+
+    } else if(c === EOF){
+
+    } else {
+        currentAttribute.value += c;
+        return singleQuotedAttributeValue;
+    }
+}
+
+function afterQuotedAttributeValue(c){
+    if(c.match(/^[\t\n\f ]$/)){
+        return beforeAttributeName;
+    } else if(c ==="/"){
+        return selfClosingStartTag;
+    } else if(c ===">"){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        emit(currentToken);
+        return data;
+    } else {
+        //This is a missing-whitespace-between-attributes parse error. Reconsume in the before attribute name state.
+        //E.g., <div id="a"x=...
+        return beforeAttributeName(c);
+    }
+}
+
+function unquotedAttributeValue(c){// e.g., <html maaa=a >. The last "a" is the unquotedAttributeValue
+    if(c.match(/^[\t\n\f ]$/)){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        return beforeAttributeName;
+    } else if(c === "/"){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        return selfClosingStartTag;
+    } else if(c === ">"){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        emit(currentToken);
+        return data;
+    } else if(c === "\u0000"){
+
+    } else if(c === EOF){
+
+    } else {
+        currentAttribute.value += c;
+        return unquotedAttributeValue;
+    }
+}
+
+function afterAttributeName(c){
+    if(c.match(/^[\t\n\f ]$/)){
+        return afterAttributeName;
+    } else if(c === "/"){
+        return selfClosingStartTag;
+    } else if(c === "="){
+        return beforeAttributeValue;
+    } else if(c === ">"){
+        currentToken[currentAttribute.name] = currentAttribute.value;
+        emit(currentToken);
+        return data;
+    } else if(c === EOF){
+        
+    } else {
+        currentAttribute = {
+            name: "",
+            value: ""
+        }
+        return attributeName(c);
+    }
+}
+
 
 function selfClosingStartTag(c){
     if(c === ">"){
