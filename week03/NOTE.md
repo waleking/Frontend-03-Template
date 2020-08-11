@@ -27,6 +27,9 @@ DOM树中只有node和element?
 
 `top.children.push(element)`和`element.parent = top`用于建立父子关系。
 
+### 将文本节点加到DOM树
+文本节点并不入栈，但是需要将文本节点挂到栈顶的chilren队列中。
+
 ## 作业心得
 ### 处理属性
 此处使用了状态机处理属性，但是逻辑相对于标签的处理更复杂一些。

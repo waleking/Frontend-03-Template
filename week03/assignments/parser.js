@@ -2,6 +2,7 @@ const EOF = Symbol("EOF"); // EOF: End of File
 
 let currentToken = null;
 let currentAttribute = null;
+let currentTextNode = null;
 
 let stack = [
     {// Init a stack with the document node.
@@ -13,10 +14,6 @@ let stack = [
 
 
 function emit(token){
-    if(token.type === "text"){
-        return; //TODO
-    }
-
     let top = stack[stack.length - 1];
     if(token.type === "startTag"){
         let element = {
@@ -41,14 +38,26 @@ function emit(token){
         if(!token.isSelfClosing){
             stack.push(element);
         } 
+        currentTextNode = null;
     } else if(token.type === 'endTag'){
         if(top.tagName !== token.tagName){
             throw new Error("not matched!");
         } else {
             stack.pop();
         }
+    } else if(token.type === "text"){
+        if(currentTextNode === null){
+            currentTextNode = {
+                "type": "text",
+                "content": ""
+            }
+            top.children.push(currentTextNode);
+        } 
+        currentTextNode.content += token.content;
     }
-    console.log(token);
+    if(token.type !== "text"){
+        console.log(token);
+    }
 }
 
 function data(c){ // the initial state in HTML spec
@@ -262,5 +271,5 @@ module.exports.parseHTML = function parseHTML(html){ // module.exports?
         state = state(c);
     }
     state(EOF); // force the State Machine to stop here. 
-    console.log(stack[0]);
+    return stack[0];
 }
