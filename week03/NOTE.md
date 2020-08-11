@@ -82,3 +82,6 @@ Anything else
 |afterQuotedAttributeValue | [12.2.5.39 After attribute value (quoted) state](https://html.spec.whatwg.org/multipage/parsing.html#after-attribute-value-(quoted)-state)|
 |unquotedAttributeValue | [12.2.5.38 Attribute value (unquoted) state](https://html.spec.whatwg.org/multipage/parsing.html#attribute-value-(unquoted)-state)|
 |selfClosingStartTag | [12.2.5.40 Self-closing start tag state](https://html.spec.whatwg.org/multipage/parsing.html#self-closing-start-tag-state)|
+
+调试的方法以测试驱动为主，通过打断点判断有没有进入正确的状态机；如果在某个状态机中有问题，查阅上述表格，判断是否和标准中所列的状态转换一致。
+注意：在某些逻辑分支中不要忘记reconsume input character。
