@@ -42,7 +42,7 @@ CSS设计里面的潜规则：尽量保证大部分的选择器在进入startTag
 一个重要的假设：在compute css的时候，css rules已经收集完毕。在真实浏览器中，可能遇到写在body中的style标签，需要重新计算CSS，这里我们忽略这种情况。
 
 ### 获取父元素序列
-为什么要获取父元素序列呢？选择器大多都和父元素相关？
+为什么要获取父元素序列呢？选择器大多都和父元素相关？因为这里要实现[descendant combinator](https://www.w3.org/TR/selectors/#descendant-combinators)。
 
 在computeCSS函数中，我们必须知道元素的所有祖先元素才能判断元素是否与规则匹配。我们从上一步骤的stack，可以获取本元素的所有祖先元素。因为我们首先获取的是“当前元素”，所以我们进行匹配的顺序是从内到外。
 
@@ -51,6 +51,10 @@ CSS设计里面的潜规则：尽量保证大部分的选择器在进入startTag
 Example 1, `div p` = Selects all <p> elements inside <div> elements
 Example 2, `div > p` = Selects all <p> elements where the parent is a <div> element
 Reference: https://www.w3schools.com/cssref/css\_selectors.asp
+
+### 选择器与元素的匹配
+实现了3种简单选择器和元素的匹配，分别是ID选择器，class选择器，tagName选择器。
+其中class选择器是元素中有单一class的情况，元素中有多个class的情况未去实现。
 
 ## 作业心得
 ### 处理属性
@@ -122,3 +126,32 @@ Anything else
 
 调试的方法以测试驱动为主，通过打断点判断有没有进入正确的状态机；如果在某个状态机中有问题，查阅上述表格，判断是否和标准中所列的状态转换一致。
 注意：在某些逻辑分支中不要忘记reconsume input character。
+
+### CSS选择器与元素匹配
+简单选择器，如class选择器，ID选择器可以在如下链接中找到标准定义：
+[6.6. Class selectors](https://www.w3.org/TR/selectors/#class-selector)
+[6.7. ID selectors](https://www.w3.org/TR/selectors/#id-selector)
+
+对于[复合选择器](https://www.w3.org/TR/selectors/#typedef-compound-selector)，其w3.org定义如下：
+```
+<compound-selector> = [ <type-selector>? <subclass-selector>*
+                        [ <pseudo-element-selector> <pseudo-class-selector>* ]* ]!
+```
+在不考虑pseudo的情况下，我们的compound selector应该写成如下形式：
+```
+<compound-selector> = [ <type-selector>? <subclass-selector>* ]!
+```
+[关于感叹号!(must req)的解释](https://www.w3.org/TR/css-values-4/#mult-req):
+```
+An exclamation point (!) after a group indicates that the group is required and must produce at least one value; even if the grammar of the items within the group would otherwise allow the entire contents to be omitted, at least one component value must not be omitted.
+```
+[subclass-selector](https://www.w3.org/TR/selectors/#typedef-subclass-selector):
+```
+<subclass-selector> = <id-selector> | <class-selector> |
+                      <attribute-selector> | <pseudo-class-selector>
+```
+
+在进行一系列简化之后，我们的compound selector的正则写法是：
+```
+<compound-selector> =  [ <type-selector>? <subclass-selector>* ]!
+```
