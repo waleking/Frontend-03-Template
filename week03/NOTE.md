@@ -69,6 +69,11 @@ specificity用一个四元组来表示，第一位是inline位置，第二位是
 例如，复杂选择器`div div #id`的specificity是`[0, 1, 0, 2]`；另有一个复杂选择器`div #my #id`的specificity是`[0, 2, 0, 1]`。
 specificity采用从左比较到右的非进位制比较。
 
+1. CSS规则根据specificity和后来优先规则覆盖
+2. specificity是个四元组，越左边权重越高
+3. 一个CSS规则的specificity根据包含的简单选择器相加而成
+
+
 ## 作业心得
 ### 处理属性
 此处使用了状态机处理属性，但是逻辑相对于标签的处理更复杂一些。
