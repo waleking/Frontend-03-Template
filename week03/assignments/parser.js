@@ -1,5 +1,4 @@
 const css = require("css"); // an npm package to compile css
-const { stat } = require("fs");
 
 const EOF = Symbol("EOF"); // EOF: End of File
 
@@ -21,15 +20,133 @@ function addCSSRules(text){
     rules.push(...ast.stylesheet.rules);
 }
 
+/**
+ * .class selector, id selector, tagName selector
+ **/ 
+function match(selector, element){
+    if(!element.attributes || !selector){ // !element.attributes means a text node
+        return false;
+    } 
+
+    // compound selector's definition: 
+    // <compound-selector> = [ <type-selector>? <subclass-selector>*
+    // [ <pseudo-element-selector> <pseudo-class-selector>* ]* ]!
+    const compoundSelectorRegex = /\w+((\.\w+))*(\#\w+)|\w+((\.\w+))+(\#\w+)?|(\.\w+){2,}|(\.\w+)+(\#\w+)/;
+    if(selector.match(compoundSelectorRegex)){
+        // tagName selector
+        const tagnameSelectorRegex = /^(\w+)[\.|\#]*/;
+        let tagNameMatches = selector.match(tagnameSelectorRegex);
+        if(tagNameMatches){
+            let tagNameInSelector = tagNameMatches[1];
+            if(element.tagName !== tagNameInSelector){
+                return false;
+            }
+        }
+
+        // class selctors
+        const classSelectorRegex = /(\.\w+)/g;
+        let classMatchResult = selector.match(classSelectorRegex);
+        if(classMatchResult){
+            // classSelectors should be all in elementClasses
+            let classSelectors = classMatchResult.map(item => item.substring(1));
+            let elementClasses = element.attributes.filter(item => item.name==="class").map(item => item.value);
+            for(let classSelector of classSelectors){
+                if(elementClasses.indexOf(classSelector)===-1){
+                    return false;
+                }
+            }
+        }
+
+        // id selctor
+        const idSelectorRegex = /(\#\w+)/;
+        let idMatchResult = selector.match(idSelectorRegex);
+        if(idMatchResult){
+            let idSelector = idMatchResult[1];
+            let elementIDs = element.attributes.filter(item => item.name === "id");
+            if(elementIDs & elementIDs[0]===idSelector){
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    if(selector.charAt(0) === "#"){
+        // id selector
+        // You can only have one ID per element
+        let attr = element.attributes.filter(attr => attr.name === "id")[0];
+        if(attr && attr.value === selector.replace("#", "")){
+            return true;
+        }
+    } else if(selector.charAt(0) === "."){
+        // class selector
+        // You can indeed have more than one class
+        let attrs = element.attributes.filter(attr => attr.name === "class");
+        if(attrs){
+            let classValues = attrs.map(attr => attr.value);
+            if(selector.replace(".", "") in classValues){
+                return true;
+            }
+        }
+    } else {
+        // tagName selector
+        if(element.tagName === selector){
+            return true;
+        }
+    }
+    return false;
+}
+
 function computeCSS(element){
-    console.log(rules);
+    // console.log(rules);
     console.log("Compute css for Element", element);
-    // get the parent element
 
     // Example 1, `div p` = Selects all <p> elements inside <div> elements
     // Example 2, `div > p` = Selects all <p> elements where the parent is a <div> element
     // Reference: https://www.w3schools.com/cssref/css_selectors.asp
+    // Here, the variable elements means the ancestors of the current element in the DOM tree.
     let elements = stack.slice().reverse();//.slice() means copy, and reverse() means doing the comaprison from inside to outside
+
+    if(!element.computedStyle){
+        element.computedStyle = {}; // To store css info in an element.
+    }
+
+    elements = elements.slice(0, elements.length -1); // excluding "document"
+
+    for(let rule of rules){
+        let selectorParts = rule.selectors[0].split(" ").reverse();// Skip the ", " case. And reverse as the elements
+        if(comapreTwoArray(selectorParts, elements, match)){
+            console.log(`${elements.map(item => item.tagName)} matches to ${selectorParts}`);
+        }
+    }
+}
+
+/**
+ * arrA should be in arrB with arrA's original order, and arrA[0] === arrB[0]
+ * @param {*} arrA 
+ * @param {*} arrB 
+ */
+function comapreTwoArray(arrA, arrB, compareFunc){
+    if(!arrB){
+        return false;
+    }
+    if(!arrA){
+        throw new Error("arrA should not be empty");
+    }
+    if(!compareFunc(arrA[0],arrB[0])){
+        return false;
+    }
+    let aIdx = 1;
+    for(let i = 1; i < arrB.length; i++){
+        if(compareFunc(arrA[aIdx], arrB[i])){
+            aIdx++;
+        }
+    }
+    if(aIdx < arrA.length){
+        return false;
+    } else {
+        return true;
+    }
 }
 
 
@@ -52,15 +169,19 @@ function emit(token){
             }
         }
 
-        computeCSS(element);
+        
 
         // construct tree by setting parent and children
         top.children.push(element);
         element.parent = top;
 
-        if(!token.isSelfClosing){
-            stack.push(element);
-        } 
+        stack.push(element);
+        computeCSS(element);
+
+        if(token.isSelfClosing){
+            stack.pop(element);
+        }
+
         currentTextNode = null;
     } else if(token.type === 'endTag'){
         if(top.tagName !== token.tagName){

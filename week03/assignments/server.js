@@ -33,10 +33,14 @@ body div img{
     width: 30px;
     background-color: #ff1111;
 }
+div.a{
+    width: 30px;
+    background-color: #ff1111;
+}
         </style>
     </head>
     <body>
-        <div>
+        <div class="a">
             <img id="myid"/>
             <img />
         </div>

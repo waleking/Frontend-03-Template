@@ -129,7 +129,7 @@ Anything else
 
 ### CSS选择器与元素匹配
 简单选择器，如class选择器，ID选择器可以在如下链接中找到标准定义：
-[6.6. Class selectors](https://www.w3.org/TR/selectors/#class-selector)
+[6.6. Class selectors](https://www.w3.org/TR/selectors/#class-selector)，
 [6.7. ID selectors](https://www.w3.org/TR/selectors/#id-selector)
 
 对于[复合选择器](https://www.w3.org/TR/selectors/#typedef-compound-selector)，其w3.org定义如下：
@@ -153,5 +153,42 @@ An exclamation point (!) after a group indicates that the group is required and 
 
 在进行一系列简化之后，我们的compound selector的正则写法是：
 ```
-<compound-selector> =  [ <type-selector>? <subclass-selector>* ]!
+<compound-selector> = \w+((\.\w+))*(\#\w+)|\w+((\.\w+))+(\#\w+)?|(\.\w+){2,}|(\.\w+)+(\#\w+)
 ```
+其中，`\w+`来表示tagName selector, `\.\w+`表示class selector，`\#\w+`表示ID selector。
+我们认为tagName selector最多出现一次，class selector可以出现多次，ID selector最多出现一次。
+用`div`来对tagName selector举例，用`.a`，`.b`对class selector举例，用`#chapter1`对ID selector举例。
+可以有如下五种情况：
+1. `div#chapter1`，type (tagName) selector出现一次，ID selector出现一次，对应正则表达式第一部分`\w+((\.\w+))*(\#\w+)`。
+2. `div.a#chapter1`，type (tagName) selector出现一次，class selector不出现或出现一次以上，ID selector出现一次，对应正则表达式第一部分`\w+((\.\w+))*(\#\w+)`。
+3. `div.a.b`，type (tagName) selector出现一次，class selector出现一次以上，对应正则表达式第二部分`\w+((\.\w+))+(\#\w+)?`。
+4. `.a.b`，class selector出现两次或以上，对应正则表达式第三部分`(\.\w+){2,}`。
+5. `.a#chapter1`，class selector出现一次以上，ID selector出现一次，对应正则表达式`(\.\w+)+(\#\w)`。
+
+用如下脚本测试以确认正则表达式的正确性。
+```
+const compoundSelectorRegex = /\w+((\.\w+))*(\#\w+)|\w+((\.\w+))+(\#\w+)?|(\.\w+){2,}|(\.\w+)+(\#\w+)/;
+
+const caseArr = [
+  "div.a.b", //true
+  "div#a",   //true
+  ".a.a",    //true
+  "div#chapter1", //true
+  "div.a.b", //true
+  ".a.b",    //true
+  ".a#chapter1",  //true
+  ".a",      //false
+  "#chapter1",    //false
+  "div"     //false
+];
+
+caseArr.forEach(
+  (item) => {
+    if(item.match(compoundSelectorRegex)){
+      console.log("true");
+    }else{
+      console.log("false");
+    }
+  });
+```
+
