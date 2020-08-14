@@ -126,7 +126,43 @@ Anything else
 
 调试的方法以测试驱动为主，通过打断点判断有没有进入正确的状态机；如果在某个状态机中有问题，查阅上述表格，判断是否和标准中所列的状态转换一致。
 注意：在某些逻辑分支中不要忘记reconsume input character。
+### 获取父元素序列
+在此节，处理[descendant combinator](https://www.w3.org/TR/selectors/#descendant-combinators)。为了让DOM树中的节点能够匹配到descendant combinator，并让逻辑更简明一些，对winter老师的代码进行了改动，更新为comapreTwoArray函数。将问题转化为两个数组arrA和arrB的比较：arrA的所有元素都出现在arrB中；并且匹配上的元素保持有arrA的原有顺序；并且首元素相等。对此，对入栈的代码也做了改动：startTag统统入栈，然后computeCSS，最后对于self-closed startTag进行出栈操作。`compareFunc`为传入的比较元素是否相等的函数，对应于parse.js代码中的`match`函数。
 
+另外，上述操作能够成功处理.class中间有空格的情形。
+首先明确的是.class1 .class2 和 .class1.class2 是两种不同的选择规则。
+* 中间有空格的情况：是选择到.class1类下的.class2类子节点，即.class2类的节点要是.class1类子节点。
+这种情形符合[descendant combinator](https://www.w3.org/TR/selectors/#descendant-combinators)的定义：A descendant combinator is whitespace that separates two compound selectors. 只要我们能处理好descendant combinator，以及处理好compound selector和元素的比较，就能自动的推广到.class中间有空格的情形。
+* 中间无空格的情况：是选择到同时拥有.class1和.class2的节点，属于compound selector。
+```
+/**
+ * arrA should be in arrB with arrA's original order, and arrA[0] === arrB[0]
+ * @param {*} arrA 
+ * @param {*} arrB 
+ */
+function comapreTwoArray(arrA, arrB, compareFunc){
+    if(!arrB){
+        return false;
+    }
+    if(!arrA){
+        throw new Error("arrA should not be empty");
+    }
+    if(!compareFunc(arrA[0],arrB[0])){
+        return false;
+    }
+    let aIdx = 1;
+    for(let i = 1; i < arrB.length; i++){
+        if(compareFunc(arrA[aIdx], arrB[i])){
+            aIdx++;
+        }
+    }
+    if(aIdx < arrA.length){
+        return false;
+    } else {
+        return true;
+    }
+}
+```
 ### CSS选择器与元素匹配
 简单选择器，如class选择器，ID选择器可以在如下链接中找到标准定义：
 [6.6. Class selectors](https://www.w3.org/TR/selectors/#class-selector)，
@@ -192,3 +228,4 @@ caseArr.forEach(
   });
 ```
 
+compound selector通过正则表达式匹配通过之后，再单独抽取TagName selector，class selector，ID selector。

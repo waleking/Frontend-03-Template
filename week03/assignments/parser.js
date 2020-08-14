@@ -21,7 +21,7 @@ function addCSSRules(text){
 }
 
 /**
- * .class selector, id selector, tagName selector
+ * The variable "selector" can be compound selector, or .class selector, or id selector, or tagName selector.
  **/ 
 function match(selector, element){
     if(!element.attributes || !selector){ // !element.attributes means a text node
@@ -37,8 +37,8 @@ function match(selector, element){
         const tagnameSelectorRegex = /^(\w+)[\.|\#]*/;
         let tagNameMatches = selector.match(tagnameSelectorRegex);
         if(tagNameMatches){
-            let tagNameInSelector = tagNameMatches[1];
-            if(element.tagName !== tagNameInSelector){
+            let tagNameSelector = tagNameMatches[1];
+            if(element.tagName !== tagNameSelector){
                 return false;
             }
         }
@@ -48,7 +48,7 @@ function match(selector, element){
         let classMatchResult = selector.match(classSelectorRegex);
         if(classMatchResult){
             // classSelectors should be all in elementClasses
-            let classSelectors = classMatchResult.map(item => item.substring(1));
+            let classSelectors = classMatchResult.map(item => item.replace(".", ""));
             let elementClasses = element.attributes.filter(item => item.name==="class").map(item => item.value);
             for(let classSelector of classSelectors){
                 if(elementClasses.indexOf(classSelector)===-1){
@@ -57,6 +57,7 @@ function match(selector, element){
             }
         }
 
+        // simple selectors
         // id selctor
         const idSelectorRegex = /(\#\w+)/;
         let idMatchResult = selector.match(idSelectorRegex);
@@ -80,11 +81,11 @@ function match(selector, element){
         }
     } else if(selector.charAt(0) === "."){
         // class selector
-        // You can indeed have more than one class
+        // You can indeed have more than one class in an element
         let attrs = element.attributes.filter(attr => attr.name === "class");
         if(attrs){
             let classValues = attrs.map(attr => attr.value);
-            if(selector.replace(".", "") in classValues){
+            if(classValues.indexOf(selector.replace(".", ""))>-1){
                 return true;
             }
         }
