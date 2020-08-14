@@ -33,6 +33,9 @@ body div img{
     width: 30px;
     background-color: #ff1111;
 }
+img{
+    color: red;
+}
         </style>
     </head>
     <body>

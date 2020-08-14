@@ -255,3 +255,51 @@ div.a{
 ```
 {"type":"rule","selectors":["div.a"],"declarations":[{"type":"declaration","property":"width","value":"30px","position":{"start":{"line":11,"column":5},"end":{"line":11,"column":16}}},{"type":"declaration","property":"background-color","value":"#ff1111","position":{"start":{"line":12,"column":5},"end":{"line":12,"column":30}}}],"position":{"start":{"line":10,"column":1},"end":{"line":13,"column":2}}}
 ```
+
+### specificity的计算逻辑
+此节需要注意的是specificity是以declaration为单位的，而不是以rule为单位。
+例如，style中有三条规则能够应用到某个img标签：
+```
+body div #myid{
+    width: 100px;
+    background-color: #ff5000;
+}
+body div img{
+    width: 30px;
+    background-color: #ff1111;
+}
+img{
+    color: red;
+}
+```
+那么该img的computedStyle为：
+```
+"computedStyle": {
+"width": {
+    "value": "100px",
+    "specifity": [
+        0,
+        1,
+        0,
+        2
+    ]
+},
+"background-color": {
+    "value": "#ff5000",
+    "specifity": [
+        0,
+        1,
+        0,
+        2
+    ]
+},
+"color": {
+    "value": "red",
+    "specifity": [
+        0,
+        0,
+        0,
+        1
+    ]
+}
+```
