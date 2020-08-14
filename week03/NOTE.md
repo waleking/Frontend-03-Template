@@ -56,6 +56,19 @@ Reference: https://www.w3schools.com/cssref/css\_selectors.asp
 实现了3种简单选择器和元素的匹配，分别是ID选择器，class选择器，tagName选择器。
 其中class选择器是元素中有单一class的情况，元素中有多个class的情况未去实现。
 
+
+### 生成computed属性
+一旦选择器匹配，就应用选择器到元素上，形成computedStyle。
+
+简单地将属性抄写到了element的computedStyle属性上，并未处理css优先级(specificity)。
+
+### specificity的计算逻辑
+specificity是专指程度（通常理解的优先级）。专指程度：ID selector> class selector> tagName selector。
+
+specificity用一个四元组来表示，第一位是inline位置，第二位是id位置，第三位是class位置，最后一位是tagName位置。
+例如，复杂选择器`div div #id`的specificity是`[0, 1, 0, 2]`；另有一个复杂选择器`[div #my #id]`的specificity是`[0, 2, 0, 1]`。
+specificity采用从左比较到右的非进位制比较。
+
 ## 作业心得
 ### 处理属性
 此处使用了状态机处理属性，但是逻辑相对于标签的处理更复杂一些。
@@ -229,3 +242,16 @@ caseArr.forEach(
 ```
 
 compound selector通过正则表达式匹配通过之后，再单独抽取TagName selector，class selector，ID selector。
+
+### 生成computed属性
+首先查看rule的数据结构，包含有selectors，有declarations。以下为复合选择器`div.a`对应的declarations。
+```
+div.a{
+    width: 30px;
+    background-color: #ff1111;
+}
+```
+第一条declaration包含"property":"width","value":"30px"；第二条declaration包含"property":"background-color","value":"#ff1111"。
+```
+{"type":"rule","selectors":["div.a"],"declarations":[{"type":"declaration","property":"width","value":"30px","position":{"start":{"line":11,"column":5},"end":{"line":11,"column":16}}},{"type":"declaration","property":"background-color","value":"#ff1111","position":{"start":{"line":12,"column":5},"end":{"line":12,"column":30}}}],"position":{"start":{"line":10,"column":1},"end":{"line":13,"column":2}}}
+```

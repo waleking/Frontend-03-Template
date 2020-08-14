@@ -33,28 +33,11 @@ body div img{
     width: 30px;
     background-color: #ff1111;
 }
-div.a{
-    width: 30px;
-    background-color: #ff1111;
-}
-.a{
-    width: 30px;
-    background-color: #ff1111;
-}
-.a .b{
-    width: 30px;
-    background-color: #ff1111;
-}
         </style>
     </head>
     <body>
         <div class="a">
             <img id="myid"/>
-            <img />
-        </div>
-        <div class="a">
-            <div class="b" id="ab">
-            </div>
         </div>
     </body>
 </html>`);

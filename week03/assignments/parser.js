@@ -16,7 +16,7 @@ let stack = [
 let rules = []; // css rules
 function addCSSRules(text){
     var ast = css.parse(text);
-    console.log(JSON.stringify(ast), null, "    ");
+    // console.log(JSON.stringify(ast), null, "    ");
     rules.push(...ast.stylesheet.rules);
 }
 
@@ -116,8 +116,14 @@ function computeCSS(element){
     for(let rule of rules){
         let selectorParts = rule.selectors[0].split(" ").reverse();// Skip the ", " case. And reverse as the elements
         if(comapreTwoArray(selectorParts, elements, match)){
-            console.log('Element', element, 'matched rule', rule);
-            //todo
+            for(let declaration of rule.declarations){
+                let property = declaration.property;
+                let value = declaration.value;
+                if(!element.computedStyle[property]){
+                    element.computedStyle[property] = {value: null};
+                }
+                element.computedStyle[property].value = value;
+            }
         }
     }
 }
@@ -174,7 +180,8 @@ function emit(token){
 
         // construct tree by setting parent and children
         top.children.push(element);
-        element.parent = top;
+        element.parent = top; // If we add the parent property here, we can not do JSON.stringify on DOM, 
+                              // as the TypeError "Converting circular structure to JSON" can happen.
 
         stack.push(element);
         computeCSS(element);
