@@ -99,8 +99,7 @@ function match(selector, element){
 }
 
 function computeCSS(element){
-    // console.log(rules);
-    console.log("Compute css for Element", element);
+    // console.log("Compute css for Element", element);
 
     // Example 1, `div p` = Selects all <p> elements inside <div> elements
     // Example 2, `div > p` = Selects all <p> elements where the parent is a <div> element
@@ -117,7 +116,8 @@ function computeCSS(element){
     for(let rule of rules){
         let selectorParts = rule.selectors[0].split(" ").reverse();// Skip the ", " case. And reverse as the elements
         if(comapreTwoArray(selectorParts, elements, match)){
-            console.log(`${elements.map(item => item.tagName)} matches to ${selectorParts}`);
+            console.log('Element', element, 'matched rule', rule);
+            //todo
         }
     }
 }
@@ -207,7 +207,7 @@ function emit(token){
         currentTextNode.content += token.content;
     }
     if(token.type !== "text"){
-        console.log(token);
+        // console.log(token);
     }
 }
 
@@ -416,7 +416,6 @@ function selfClosingStartTag(c){
 }
 
 module.exports.parseHTML = function parseHTML(html){ // module.exports? 
-    // console.log(`html: ${html}`);
     let state = data;
     for(let c of html){
         state = state(c);
