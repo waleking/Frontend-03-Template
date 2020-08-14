@@ -66,7 +66,7 @@ Reference: https://www.w3schools.com/cssref/css\_selectors.asp
 specificity是专指程度（通常理解的优先级）。专指程度：ID selector> class selector> tagName selector。
 
 specificity用一个四元组来表示，第一位是inline位置，第二位是id位置，第三位是class位置，最后一位是tagName位置。
-例如，复杂选择器`div div #id`的specificity是`[0, 1, 0, 2]`；另有一个复杂选择器`[div #my #id]`的specificity是`[0, 2, 0, 1]`。
+例如，复杂选择器`div div #id`的specificity是`[0, 1, 0, 2]`；另有一个复杂选择器`div #my #id`的specificity是`[0, 2, 0, 1]`。
 specificity采用从左比较到右的非进位制比较。
 
 ## 作业心得

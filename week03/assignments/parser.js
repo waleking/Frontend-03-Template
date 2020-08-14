@@ -98,6 +98,30 @@ function match(selector, element){
     return false;
 }
 
+function computeSpecifity(selectorParts){
+    let specifity = [0, 0, 0, 0]; // this array is in order of [inline, ID, class, tagName]
+    for(let selectorPart of selectorParts){
+        // assume selectorPart is a simple selector
+        if(selectorPart.charAt(0) === "#"){
+            specifity[1]++;
+        } else if(selectorPart.charAt(0) === "."){
+            specifity[2]++;
+        } else {
+            specifity[3]++;
+        }
+    }
+    return specifity;
+}
+
+function compareSpecifity(sp1, sp2){
+    for(let i = 0; i < 4; i++){
+        if(sp1[i] < sp2[i]){
+            return -1;
+        }
+    }
+    return 1; // if all are equal, use the new one. 
+}
+
 function computeCSS(element){
     // console.log("Compute css for Element", element);
 
@@ -116,6 +140,16 @@ function computeCSS(element){
     for(let rule of rules){
         let selectorParts = rule.selectors[0].split(" ").reverse();// Skip the ", " case. And reverse as the elements
         if(comapreTwoArray(selectorParts, elements, match)){
+            let specifity = computeSpecifity(selectorParts);
+            if(!element.computedStyle['specifity']){
+                element.computedStyle['specifity'] = specifity;
+            } else {
+                if (compareSpecifity(specifity, element.computedStyle.specifity)<0){
+                    continue;
+                }
+            }
+
+            // add each declaration (property) to computedStyle
             for(let declaration of rule.declarations){
                 let property = declaration.property;
                 let value = declaration.value;
@@ -163,7 +197,7 @@ function emit(token){
         let element = {
             type: "element",
             tagName: token.tagName,
-            parent: null,
+            // parent: null,
             children: [],
             attributes: []
         }
@@ -180,7 +214,7 @@ function emit(token){
 
         // construct tree by setting parent and children
         top.children.push(element);
-        element.parent = top; // If we add the parent property here, we can not do JSON.stringify on DOM, 
+        // element.parent = top; // If we add the parent property here, we can not do JSON.stringify on DOM, 
                               // as the TypeError "Converting circular structure to JSON" can happen.
 
         stack.push(element);
