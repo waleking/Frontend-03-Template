@@ -66,3 +66,7 @@ The justify-content property accepts different values:
 4. space-between: items are evenly distributed in the line; first item is on the start line, last item on the end line
 5. space-around: items are evenly distributed in the line with equal space around them
 6. space-evenly: items are distributed so that the spacing between any two adjacent alignment subjects, before the first alignment subject, and after the last alignment subject is the same
+
+### 收集元素进行（hang）
+此节示例代码可能有bug，例如：如果定义`flexLine`为array，那么就不能对`flexLine`追加属性`mainSpace`和`crossSpace`。
+我们更新felxLine为一般的Object，其中有items属性对应了array。

@@ -19,14 +19,14 @@ function getStyle(element){
 
 function layout(element){
     if(!element.computedStyle){
-        return undefined;
+        return (void 0);
     }
 
     let elementStyle = getStyle(element);
     
     // now, we only support the flex layout
     if(elementStyle.display !== "flex"){
-        return undefined;
+        return (void 0);
     }
     
     // check children for layout, and skip text nodes
@@ -118,6 +118,79 @@ function layout(element){
         crossBase = 0;
         crossSign = +1;
     }
+
+    let isAutoMainSize = false;
+    if(!style[mainSize]){ // no size set on the main axis, so we do the auto sizing
+        elementStyle[mainSize] = 0;
+        for(let i = 0; i<items.length; i++){
+            let item = items[i];
+            let itemStyle = item.style;
+            if(itemStyle[mainSize] !== null || itemStyle[mainSize] > 0 ){
+                elementStyle[mainSize] += itemStyle[mainSize];
+            }
+        }
+        isAutoMainSize = true;
+    }
+
+    let flexLine = {items: []};
+    let flexLines = [flexLine];
+
+    let mainSpace = elementStyle[mainSize]; // the remaining space on the main axis
+    let crossSpace = 0; //the size on the cross axis
+
+    for(let i = 0; i < items.length; i++){
+        let item = items[i];
+        let itemStyle = getStyle(item);
+
+        if(itemStyle[mainSize] === null){
+            itemStyle[mainSize] = 0;
+        }
+
+        if(style.flex){ //可伸缩的，是flex,而不是display flex?
+            flexLine.items.push(item);
+        } else if(itemStyle.flexWrap === 'nowrap' && isAutoMainSize){
+            mainSpace -= itemStyle[mainSize]; // if itemStyle[mainSize] is not defined, then the mainSpace isn't changed.
+            if(itemStyle[crossSize] !== null && itemStyle[crossSize] !== (void 0)){
+                crossSpace = Math.max(crossSpace, itemStyle[crossSpace]);
+            }
+            flexLine.items.push(item);
+        } else {
+            // wrap
+            if(itemStyle[mainSize] > style[mainSize]){ // 比父元素的size还要大
+                itemStyle[mainSize]  = style[mainSize];
+            }
+
+            if(mainSpace < style[mainSize]){//主轴里的剩余空间不足以
+                // set the old flexLine
+                flexLine.mainSpace = mainSpace;//?
+                flexLine.crossSpace = crossSpace;//?
+                flexLine.items.push(item);
+                flexLines.push(flexLine);
+
+                // reset flexLine;
+                flexLine = {items:[]};
+
+                // reset  mainSpace and crossSpace for the next flex line
+                mainSpace = style[mainSize];
+                crossSpace = 0;
+            } else {
+                flexLine.items.push(item); //push an item into the flexLine, as the flexLine's mainSpace is greater than 0.
+            }
+
+            // update the crossSpace
+            if(itemStyle[crossSize]!==null && itemStyle[crossSize]!== (void 0)){
+                crossSpace = Math.max(crossSpace, itemStyle[crossSpace]);
+            }
+
+            // update the mainSpace
+            mainSpace -= itemStyle[mainSize];
+        }
+    }
+    // update the last flexLine's info
+    flexLine.mainSpace = mainSpace;
+    flexLine.crossSpace = crossSpace;
+
+    console.log(flexLines);
 }
 
 module.exports = layout;
