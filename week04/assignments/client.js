@@ -217,6 +217,7 @@ void async function(){ // async? void?
     console.log(JSON.stringify(dom, null, "    "));
 
     let viewport = images(800, 600);
-    render(viewport, dom.children[0].children[2].children[1].children[3]);
+    // render(viewport, dom.children[0].children[2].children[1].children[3]); // render a single element
+    render(viewport, dom);
     viewport.save("viewport.jpg");
 }();
