@@ -4,6 +4,7 @@
   "description": "winter's Toy Browser. Build it from scratch, including http parsing, html parsing, css computing, DOM positioning, and rendering",
   "author": "winter, weijing",
   "devDependencies": {
-    "css": "~3.0.0"
+    "css": "~3.0.0",
+    "images": "~3.2.3"
   }
 }

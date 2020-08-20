@@ -10,7 +10,7 @@ function getStyle(element) {
         if (element.style[prop].toString().match(/px$/)) {
             element.style[prop] = parseInt(element.style[prop]);
         }
-        if (element.style[prop].toString.match(/^[0-9\.]$/)) {
+        if (element.style[prop].toString().match(/^[0-9\.]$/)) {
             element.style[prop] = parseInt(element.style[prop]);
         }
     }
@@ -142,6 +142,9 @@ function layout(element) {
         isAutoMainSize = true;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // compute the main axis /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     let flexLine = {
         items: []
     };
@@ -246,7 +249,7 @@ function layout(element) {
             let flexTotal = 0;//?
             let items = flexLine.items;
             for(let item of items){
-                let itemStyle = getStyle[item];
+                let itemStyle = getStyle(item);
                 if((itemStyle.flex !== null) && (itemStyle.flex !== (void 0))){
                     flexTotal += itemStyle.flex; // flex can be a number that >= 1
                 }
@@ -297,6 +300,92 @@ function layout(element) {
             }
         });
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // compute the cross axis /////////////////////////////////////////////////////////////////////////
+    // align-items, align-self ////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    if(!style[crossSize]){ // auto sizing because the crossSize is not defined in the container's style
+        crossSpace = 0;
+        elementStyle[crossSize] = 0; // what's difference between style and elementStyle?
+        // use the containers' each inside flexline's crossSpace to update the container's crossSpace.
+        for(let flexLine of flexLines){
+            elementStyle[crossSize] = elementStyle[crossSize] + flexLine.crossSpace; 
+        }
+    } else { // the container's crossSize is defined
+        crossSpace = style[crossSize];
+        for(let flexLine of flexLines){
+            crossSpace -= flexLine.crossSpace;
+        }
+    }
+
+    if(style.flexWrap === "wrap-reverse"){
+        crossBase = style[crossSize];
+    } else {
+        crossBase = 0;
+    }
+    let lineSize = style[crossSize] / flexLines.length; //?
+    let step; 
+    if(style.alignContent === "flex-start"){
+        crossBase += 0; //?
+        step = 0;
+    }
+    if(style.alignContent === "flex-end"){
+        crossBase += crossSign * crossSpace;
+        step = 0;
+    }
+    if(style.alignContent === "center"){
+        crossBase += crossSign * crossSpace / 2;
+        step = 0;
+    }
+    if(style.alignContent === "space-between"){
+        crossBase = 0;
+        step = crossSpace / (flexLines.length -1);
+    }
+    if(style.alignContent === "space-around"){
+        step = crossSpace / flexLines.length;
+        crossBase += crossSign * step / 2;
+    }
+    if(style.alignContent === "stretch"){
+        crossBase += 0;//?
+        step = 0;
+    }
+    flexLines.forEach(function(flexLine){
+        let items = flexLine.items;
+        let lineCrossSize = style.alignContent === "stretch" ?
+            flexLine.crossSpace + crossSpace / flexLines.length : 
+            flexLine.crossSpace;
+        for(let item of items){
+            let itemStyle = getStyle(item);
+
+            let align = itemStyle.alignSelf || style.alignItems; //受alignSelf影响，也受父元素的alignItems的影响
+
+            if(item === null){
+                itemStyle[crossSize] = (align === "strecth") ? lineCrossSize : 0; //?
+            }
+            
+            if(align === "flex-start"){
+                itemStyle[crossStart] = crossBase;
+                itemStyle[crossEnd] = itemStyle[crossStart] + crossSpace;
+            }
+            if(align === "flex-end"){
+                itemStyle[crossEnd] = crossBase + crossSign * lineCrossSize;
+                itemStyle[crossStart] = itemStyle[crossStart] - crossSpace;
+            }
+            if(align === "center"){
+                itemStyle[crossStart] = crossBase + crossSign * (lineCrossSize - itemStyle[crossSize])/2;
+                itemStyle[crossEnd] = item[crossStart] + crossSign * itemStyle[crossSize];
+            }
+            if(align === "stretch"){
+                // TODO here
+                // itemStyle[crossStart] = crossBase;
+                // itemStyle[crossEnd] = crossBase + crossSign * 
+                // itemStyle[crossSize] = crossSign * (itemStyle[crossSize])
+            }
+        }
+        crossBase += crossSign * (lineCrossSize + step);
+    });
+    // console.log(items);//?
 }
 
 module.exports = layout;

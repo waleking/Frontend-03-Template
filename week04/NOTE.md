@@ -47,6 +47,7 @@ flex排版有主轴(main axis)的概念，即排版时主要的延伸方向。�
 flex-align? item-align?
 
 ### 绘制单个元素
+使用npm images库
 
 ### 绘制DOM树
 * 递归调用子元素的绘制方法完成DOM树的绘制。

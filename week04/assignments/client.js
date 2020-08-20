@@ -1,5 +1,7 @@
 const net = require("net"); // a TCP lib
 const parser = require("./parser.js");
+const images = require("images"); // npm images package
+const render = require("./render");
 
 class Request {
     constructor(options){
@@ -213,5 +215,8 @@ void async function(){ // async? void?
     console.log(response);
     let dom = parser.parseHTML(response.body);
     console.log(JSON.stringify(dom, null, "    "));
-    console.log("");
+
+    let viewport = images(800, 600);
+    render(viewport, dom.children[0].children[2].children[1].children[3]);
+    viewport.save("viewport.jpg");
 }();
