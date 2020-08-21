@@ -90,7 +90,9 @@ function showElementsInDOMtree(element, indent){
     }
 }
 ```
-其中`indent`为缩进级别，用于显示element在DOM树中的位置。渲染测试用例中的html。
+其中`indent`为缩进级别，用于显示element在DOM树中的位置。
+
+渲染如下测试用例中的html。
 ```
 <html maaa=a >
     <head>
