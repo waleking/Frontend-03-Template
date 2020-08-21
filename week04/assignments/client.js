@@ -197,6 +197,25 @@ class ChunkedBodyParser{
     }
 }
 
+/**
+ * only show element in <body>
+ */
+function showElementsInDOMtree(element, indent){
+    if(element.type === "document"){
+        element.children.forEach(child => {
+            showElementsInDOMtree(child, 0);
+        });
+    }
+    if(element.type === "element"){
+        console.log(`${"    ".repeat(indent)}${element.tagName} ${JSON.stringify(element.style)}`);
+        if(element.children){
+            for(let child of element.children){
+                showElementsInDOMtree(child, indent+1);
+            }
+        }
+    }
+}
+
 void async function(){ // async? void?
     let request = new Request({
         method: "POST",
@@ -214,7 +233,8 @@ void async function(){ // async? void?
     let response = await request.send(); // await? 
     console.log(response);
     let dom = parser.parseHTML(response.body);
-    console.log(JSON.stringify(dom, null, "    "));
+    // console.log(JSON.stringify(dom, null, "    "));
+    showElementsInDOMtree(dom, 0);
 
     let viewport = images(800, 600);
     // render(viewport, dom.children[0].children[2].children[1].children[3]); // render a single element

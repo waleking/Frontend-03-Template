@@ -71,3 +71,35 @@ The justify-content property accepts different values:
 ### 收集元素进行（hang）
 此节示例代码可能有bug，例如：如果定义`flexLine`为array，那么就不能对`flexLine`追加属性`mainSpace`和`crossSpace`。
 我们更新felxLine为一般的Object，其中有items属性对应了array。
+
+最终渲染测试用例中的html，如下图所示。
+```
+<html maaa=a >
+    <head>
+        <style>
+#container{
+    width: 500px;
+    height: 300px;
+    display: flex;
+    background-color: rgb(255, 255, 255);
+}
+#container #myid{
+    width: 200px;
+    height: 100px;
+    background-color: rgb(255, 0, 0);
+}
+#container .c1{
+    flex: 1;
+    background-color: rgb(0, 255, 0);
+}
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="myid"></div>
+            <div class="c1"></div>
+        </div>
+    </body>
+</html>
+```
+
