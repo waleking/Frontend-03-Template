@@ -102,5 +102,5 @@ The justify-content property accepts different values:
     </body>
 </html>
 ```
-![alt text](https://github.com/waleking/Frontend-03-Template/tree/master/week04/assignments/viewport.jpg)
+![alt text](https://github.com/waleking/Frontend-03-Template/tree/master/week04/assignments/viewport.jpg?raw=true)
 
