@@ -198,7 +198,7 @@ class ChunkedBodyParser{
 }
 
 /**
- * only show element in <body>
+ * show DOM element's style attribute
  */
 function showElementsInDOMtree(element, indent){
     if(element.type === "document"){

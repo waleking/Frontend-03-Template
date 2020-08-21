@@ -72,7 +72,25 @@ The justify-content property accepts different values:
 此节示例代码可能有bug，例如：如果定义`flexLine`为array，那么就不能对`flexLine`追加属性`mainSpace`和`crossSpace`。
 我们更新felxLine为一般的Object，其中有items属性对应了array。
 
-最终渲染测试用例中的html，如下图所示。
+调试时增加了输出dom树中style属性的代码，用于我们检查layout计算有没有问题。
+```
+function showElementsInDOMtree(element, indent){
+    if(element.type === "document"){
+        element.children.forEach(child => {
+            showElementsInDOMtree(child, 0);
+        });
+    }
+    if(element.type === "element"){
+        console.log(`${"    ".repeat(indent)}${element.tagName} ${JSON.stringify(element.style)}`);
+        if(element.children){
+            for(let child of element.children){
+                showElementsInDOMtree(child, indent+1);
+            }
+        }
+    }
+}
+```
+其中`indent`为缩进级别，用于显示element在DOM树中的位置。渲染测试用例中的html。
 ```
 <html maaa=a >
     <head>
@@ -102,5 +120,17 @@ The justify-content property accepts different values:
     </body>
 </html>
 ```
-![alt text](https://github.com/waleking/Frontend-03-Template/tree/master/week04/assignments/viewport.jpg?raw=true)
+得到的DOM树中style属性的信息：
+```
+html {}
+    head {}
+        style {}
+    body {}
+        div {"width":500,"height":300,"display":"flex","background-color":"rgb(255, 255, 255)","flexDirection":"row","alignItems":"stretch","justifyContent":"flex-start","flexWrap":"nowrap","alignContent":"stretch"}
+            div {"width":200,"height":100,"background-color":"rgb(255, 0, 0)","left":0,"right":200,"top":0,"bottom":100}
+            div {"flex":1,"background-color":"rgb(0, 255, 0)","width":300,"left":200,"right":500,"height":300,"top":0,"bottom":300}
+```
 
+最终渲染结果：
+
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week04/assignments/viewport.jpg?raw=true)
