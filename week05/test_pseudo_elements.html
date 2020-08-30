@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <style>
+p::first-line {
+    color: blue;
+    /* text-transform: uppercase; */
+}
+p::first-letter{
+    color: red;
+    text-transform: uppercase;
+}
+p::after {
+    content: url(https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png);
+}
+div::first-line{
+    /* float: right; */
+    text-transform: uppercase;
+}
+/* div::first-letter{
+    float: right;
+} */
+.floating{
+    float: right;
+}
+        </style>
+    </head>
+    <body>
+        <p>
+            A CSS pseudo-element is a keyword added to a selector that lets you style a specific 
+            part of the selected element(s). 
+            For example, ::first-line can be used to change the font of the first line of a paragraph.
+        </p>
+        <div>
+            The float property is used for positioning and formatting content e.g. let an image float left to the text in a container. The float property can have one of the following values:
+- left - The element floats to the left of its container
+- right - The element floats to the right of its container
+- none - The element does not float (will be displayed just where it occurs in the text). This is default
+- inherit - The element inherits the float value of its parent
+- left - The element floats to the left of its container
+- right - The element floats to the right of its container
+- none - The element does not float (will be displayed just where it occurs in the text). This is default
+- inherit - The element inherits the float value of its parent
+        </div>
+
+        <div>
+            <p class="floating">
+                This is a somewhat long HTML
+paragraph that will be broken into several
+lines. The first line will be identified
+by a fictional tag sequence. The other lines
+will be treated as ordinary lines in the
+paragraph.
+            </p>
+            <!-- <div class="floating"> -->
+                This is a somewhat long HTML
+paragraph that will be broken into several
+lines. The first line will be identified
+by a fictional tag sequence. The other lines
+will be treated as ordinary lines in the
+paragraph.
+            <!-- </div> -->
+        </div>
+    </body>
+</html>

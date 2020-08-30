@@ -104,8 +104,85 @@ Selectors inside the negation pseudo-class are counted like any other, but the n
 如果选择器写得过于复杂，一定是HTML结构设计的不合理。
 
 ### 伪元素
+What are Pseudo-Elements? (https://www.w3schools.com/css/css_pseudo_elements.asp)
+- A CSS pseudo-element is used to style specified parts of an element.
+- For example, it can be used to:
+
+  - Style the first letter, or line, of an element
+  - Insert content before, or after, the content of an element
+
 常用的伪元素有如下四种：
-- ::before
+- ::before          
 - ::after
 - ::first-line
 - ::first-letter
+
+
+如果使用了伪元素`::before`或`::after`，就可以在declaration中添加`content`属性。
+只要定义`content`属性，那么其内容就可以像真正的DOM元素一样，生成盒（什么是盒？），参与排版和渲染。
+伪元素`::before`和`::after`可以理解为通过选择器，向界面上添加了一个不存在的元素。
+`::before`和`::after`可以任意指定display，比如inline或者inline-block，block。
+例如，如下的示意代码中（<::before/>, <::after/> invalid，仅表示伪元素所在位置），在div文本内容的末尾添加一个元素，显示google logo。
+在设计组件时，可以使用这两种伪元素在不污染DOM树的前提下，提供一些渲染效果。
+```
+<style>
+div::after{
+  content: url(https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png);
+}
+</style>
+...
+<div>
+<::before/>
+content content content content
+content content content content
+content content content content
+content content content content
+content content content content
+content content content content
+<::after/>
+</div>
+```
+
+
+`::first-line`，`::first-letter`则不一样，其本身有content属性，它的处理方式不是添加不存在的元素，而是：将已有的文本括了起来，让我们对括起来的文本进行处理。
+用`::first-letter`来实现比JS实现更加稳定。`::first-line`针对的是排版后的第一行进行修饰，`::first-line`会根据屏幕宽度自适应。
+
+`::first-line`的可用属性：
+- font
+- color
+- background
+- word-spacing
+- letter-spacing
+- text-decoration 下划线（underline)，  文字中间的线（line-through)，文字之上的线（overline)
+- text-transform 大小写
+- line-height
+
+`::first-letter`的可用属性（*斜体*部分表示相对于`::first-line`增加的可用属性）：
+- font
+- color
+- background
+- word-spacing
+- letter-spacing
+- text-decoration
+- text-transform
+- line-height
+- *float*
+- *vertical-align*
+- *盒模型系列：margin, padding, border*
+
+
+### 思考题
+思考题：为什么 first-letter 可以设置 float 之类的，而 first-line 不行呢（first-line不能变成float）？
+首先要搞清楚什么是`float`属性？如下是[w3schools](https://www.w3schools.com/css/css_float.asp)给出的解释。
+
+The float property is used for positioning and formatting content e.g. let an image float left to the text in a container. The float property can have one of the following values:
+- left - The element floats to the left of its container
+- right - The element floats to the right of its container
+- none - The element does not float (will be displayed just where it occurs in the text). This is default
+- inherit - The element inherits the float value of its parent
+
+依据[MSDN web docs: In Flow and Out of Flow](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/In_Flow_and_Out_of_Flow)对floated items的解释：As a float it is first laid out according to where it would be in normal flow, then taken out of flow and moved to the left as far as possible. 
+可以了解到float将会使得对应的盒离开normal flow，然后移动到container的最左侧或者最右侧。::first-letter能够被选中并移动。
+
+依据[w3对first-line的定义](https://www.w3.org/TR/selectors-3/#first-line)The ::first-line pseudo-element describes the contents of the first formatted line of an element. 
+如果::first-line也使用float，那么原来的the first formatted line在脱离文档流重新排版的过程中，会变得不是the first formatted line，这和原来的设计意图不相吻合，因此不支持::first-line的float属性。
