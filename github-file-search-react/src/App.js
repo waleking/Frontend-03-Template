@@ -21,7 +21,6 @@ class App extends React.Component {
 
   handleEvent = (event) => {
     const keyCode = event.keyCode || event.which; //event.which?
-
     switch(keyCode){
       case HOTKEY_CODE:
         this.setState( (prevState)=>({
@@ -37,13 +36,39 @@ class App extends React.Component {
     }
   }
 
+  handleSearch = (searchTerm) => {
+    let list;
+    console.log(`searchTerm: ${searchTerm}`);
+    if(searchTerm){
+      list = files.filter( (file) => {
+        return file.type === 'file' && file.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+      });
+    } else{
+      list = files;
+    }
+    this.setState({
+      isSearchView: true,
+      filesList: list
+    });
+  }
+
   render() {
-    const { counter, filesList } = this.state; //there's no counter right now!
+    const { isSearchView, filesList } = this.state;
 
     return (
       <div className="container">
         <Header />
-        <FilesList files={filesList} />
+        {isSearchView ? 
+          (
+            <div class="search-view">
+              <SearchView onSearch={this.handleSearch}/>
+              <FilesList files={filesList} />
+            </div>
+          ) : (
+            <FilesList files={filesList} />
+          )
+        }
+        
       </div>
     );
   }

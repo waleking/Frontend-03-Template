@@ -10,8 +10,8 @@ const SearchView = ({onSearch}) => {
 
     const onInputChange = (event) => {
         const input = event.target.value;
-        setInput(input); //?
-        onSearch(input); //?
+        setInput(input); //? what's setInput? 
+        onSearch(input); 
     }
 
     return (
