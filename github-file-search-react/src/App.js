@@ -52,12 +52,23 @@ class App extends React.Component {
   handleSearch = (searchTerm) => {
     let list;
     console.log(`searchTerm: ${searchTerm}`);
+    const pattern = new RegExp(searchTerm, "gi");
     if(searchTerm){
       list = files.filter( (file) => {
         return file.type === 'file' && file.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+      })
+      .map( (file) =>{
+        return {
+          ...file,
+          name: file.name.replace(pattern, (match)=>{
+            return `<mark>${match}</mark>`
+          })
+        };
       });
     } else{
-      list = files;
+      list = files.filter( (file) => {
+        return file.type === 'file';
+      });
     }
     this.setState({
       isSearchView: true,
