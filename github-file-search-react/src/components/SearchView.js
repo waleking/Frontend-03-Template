@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 
 const SearchView = ({onSearch}) => {
     const [input, setInput] = useState('');//what's useState? React Hooks
-    const inputRef = useRef();
+    const inputRef = useRef(); // useRef?
 
     useEffect(() => {
         inputRef.current.focus();

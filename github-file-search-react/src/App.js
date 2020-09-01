@@ -2,13 +2,15 @@ import React from 'react';
 import Header from './components/Header';
 import FilesList from './components/FilesList';
 import SearchView from './components/SearchView';
-import {ESCAPE_CODE, HOTKEY_CODE} from './utils/keyCodes';
+import InfoMessage from './components/InfoMessage';
+import {ESCAPE_CODE, HOTKEY_CODE, UP_ARROW_CODE, DOWN_ARROW_CODE} from './utils/keyCodes';
 import files from './utils/api';
 
 class App extends React.Component {
   state = {
     isSearchView: false,
-    filesList: files
+    filesList: files,
+    counter: 0 // keep track of the arrow for navigation among files
   };
 
   componentDidMount(){
@@ -20,6 +22,7 @@ class App extends React.Component {
   }
 
   handleEvent = (event) => {
+    const {filesList, counter} = this.state;
     const keyCode = event.keyCode || event.which; //event.which?
     switch(keyCode){
       case HOTKEY_CODE:
@@ -30,6 +33,16 @@ class App extends React.Component {
         break;
       case ESCAPE_CODE:
         this.setState({isSearchView: false, filesList: files});
+        break;
+      case DOWN_ARROW_CODE:
+        if(counter<filesList.length - 1){
+          this.setState({counter: counter + 1});
+        }
+        break;
+      case UP_ARROW_CODE:
+        if(counter>0){
+          this.setState({counter: counter - 1});
+        }
         break;
       default:
         break;
@@ -53,7 +66,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { isSearchView, filesList } = this.state;
+    const { isSearchView, filesList, counter } = this.state;
 
     return (
       <div className="container">
@@ -62,7 +75,11 @@ class App extends React.Component {
           (
             <div class="search-view">
               <SearchView onSearch={this.handleSearch}/>
-              <FilesList files={filesList} />
+              <InfoMessage />
+              <FilesList files={filesList} 
+              isSearchView = {isSearchView}
+              counter = {counter}/>
+              {/* {counter} */}
             </div>
           ) : (
             <FilesList files={filesList} />
