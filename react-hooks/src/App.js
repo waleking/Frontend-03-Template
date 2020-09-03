@@ -1,9 +1,13 @@
 import React from 'react';
-import Playground from './playground';
+import Playground from './Playground';
+import Name from './Name';
 
 const App = () => {
     return (
-       <Playground /> 
+        <React.Fragment>
+            <Playground /> 
+            <Name />
+        </React.Fragment>
     );
 };
 
