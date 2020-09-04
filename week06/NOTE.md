@@ -40,7 +40,8 @@
 - `float`已经脱离了正常流，但是它依赖于正常流而定义。float元素排布时影响其高度占据范围内的所有行盒。超出float元素高度范围的不再考虑。如果有两个float元素，那么下一个float元素能浮动的位置受上一个float元素影响（不会占据上一个float元素的位置）。这样会产生两个float元素在视觉上相互挤靠堆叠的现象（不是一个盖住另一个，而是一个挤在另一个边上).
 如代码[float.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/float.html)所显示的那样：
 ![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/float.png?raw=true)
-- `clear`
+- `clear`用于解决上面两个float相互挤靠堆叠的问题，clear元素的语义不是清除float的意思，而是找一个干净的空间，然后进行浮动（a.k.a., 移动）。如代码[float_clear.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/float_clear.html)，新的排布更干净整齐。![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/float_clear.png?raw=true)
+  
 
 ### 5. CSS排版：BFC合并
 ### 6. CSS排版：Flex排版
