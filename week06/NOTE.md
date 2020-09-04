@@ -45,6 +45,7 @@
 - `float`导致的重排的现象，特别是`float:left`。代码[float3.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/float3.html)显示如下。`float:left`首先让`div`不再占据新的行，而是和第四行文字处于同一行，然后通过`float:left`挤到左边。
 ![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/float3.png?raw=true)
 - `float`只推荐在一个场景中使用：图文绕排。第二代flex和第三代grid排版技术基本不再使用float。
+- magin折叠（margin collapse）：在BFC中，当两个盒占据相邻的两行，两个盒的margin会相互重叠。最后叠出来的高度和最大的那个margin相等。也就是说从两个margin变为了一个margin，所以称之为`margin collapse`。这和margin的定义相吻合：margin只要求box周围有这么大的留白就可以了，而折叠不会影响到这个留白的大小。margin collapse是非常自然的排版思路。需要注意的是margin collapse只发生在BFC中，不会发生在IFC或者flex，grid中。代码[margin.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/margin.html)展示了margin collapse的效果：![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/margin.png?raw=true)
 ### 5. CSS排版：BFC合并
 ### 6. CSS排版：Flex排版
 ### 7. CSS动画与绘制：动画
