@@ -95,7 +95,7 @@ Also, with display: inline-block, the top and bottom margins/paddings are respec
 Compared to display: block, the major difference is that display: inline-block does not add a line-break after the element, so the element can sit next to other elements.
 ```
 也就是说inline可以无视定义在其中的width, height, margin, padding，如下图所示：
-![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/floatinline,inline-block,block.png?raw=true)
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/inline,inline-block,block.png?raw=true)
 
 [overflow的定义](https://www.w3schools.com/css/css_overflow.asp)如下，可以限定block大小，引入滚动条以显示容纳不下的内容。
 ```
