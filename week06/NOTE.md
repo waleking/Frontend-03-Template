@@ -47,6 +47,61 @@
 - `float`只推荐在一个场景中使用：图文绕排。第二代flex和第三代grid排版技术基本不再使用float。
 - magin折叠（margin collapse）：在BFC中，当两个盒占据相邻的两行，两个盒的margin会相互重叠。最后叠出来的高度和最大的那个margin相等。也就是说从两个margin变为了一个margin，所以称之为`margin collapse`。这和margin的定义相吻合：margin只要求box周围有这么大的留白就可以了，而折叠不会影响到这个留白的大小。margin collapse是非常自然的排版思路。需要注意的是margin collapse只发生在BFC中，不会发生在IFC或者flex，grid中。代码[margin.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/margin.html)展示了margin collapse的效果：![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/margin.png?raw=true)
 ### 5. CSS排版：BFC合并
+正常流中最困难的部分：BFC合并。
+- Block Container：里面有BFC的，但本身不是block-level box，可以为其内容设立正常流所需的环境。如：
+  - inline-block
+  - table-cell
+  - flex item
+  - grid cell
+  - table caption
+- Block-level Box（产生line break的）: 外面有BFC的，处于正常流当中的。
+- Block Box = Block Container + Block-level Box：里外都有BFC的
+
+设立BFC (establish BFC，也就是说为其中的内容创建了**新的**Block Formatting Context，以容纳不同于“主页面”的normal flow)。
+- floats （box里面按照normal flow来排布？）
+- absolutely positioned elements
+- block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes, 
+  - flex items
+  - grid cell
+  - ...
+- and block boxes with 'overflow' other than 'visible'.
+
+附：[Block formatting contexts](https://www.w3.org/TR/CSS2/visuren.html#block-formatting)定义：
+```
+Floats, absolutely positioned elements, block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes, and block boxes with 'overflow' other than 'visible' (except when that value has been propagated to the viewport) establish new block formatting contexts for their contents.
+
+In a block formatting context, boxes are laid out one after the other, vertically, beginning at the top of a containing block. The vertical distance between two sibling boxes is determined by the 'margin' properties. Vertical margins between adjacent block-level boxes in a block formatting context collapse.
+
+In a block formatting context, each box's left outer edge touches the left edge of the containing block (for right-to-left formatting, right edges touch). This is true even in the presence of floats (although a box's line boxes may shrink due to the floats), unless the box establishes a new block formatting context (in which case the box itself may become narrower due to the floats).
+
+For information about page breaks in paged media, please consult the section on allowed page breaks.
+```
+
+[Inline formatting contexts](https://www.w3.org/TR/CSS2/visuren.html#inline-formatting)定义：
+```
+In an inline formatting context, boxes are laid out horizontally, one after the other, beginning at the top of a containing block. Horizontal margins, borders, and padding are respected between these boxes. The boxes may be aligned vertically in different ways: their bottoms or tops may be aligned, or the baselines of text within them may be aligned. The rectangular area that contains the boxes that form a line is called a line box.
+
+The width of a line box is determined by a containing block and the presence of floats. The height of a line box is determined by the rules given in the section on line height calculations.
+
+A line box is always tall enough for all of the boxes it contains. However, it may be taller than the tallest box it contains (if, for example, boxes are aligned so that baselines line up). When the height of a box B is less than the height of the line box containing it, the vertical alignment of B within the line box is determined by the 'vertical-align' property. When several inline-level boxes cannot fit horizontally within a single line box, they are distributed among two or more vertically-stacked line boxes. Thus, a paragraph is a vertical stack of line boxes. Line boxes are stacked with no vertical separation (except as specified elsewhere) and they never overlap.
+
+In general, the left edge of a line box touches the left edge of its containing block and the right edge touches the right edge of its containing block. However, floating boxes may come between the containing block edge and the line box edge. Thus, although line boxes in the same inline formatting context generally have the same width (that of the containing block), they may vary in width if available horizontal space is reduced due to floats. Line boxes in the same inline formatting context generally vary in height (e.g., one line might contain a tall image while the others contain only text).
+```
+
+[inline, Inline-block, block之间的区别](https://www.w3schools.com/css/css_inline-block.asp)
+```
+Compared to display: inline, the major difference is that display: inline-block allows to set a width and height on the element.
+Also, with display: inline-block, the top and bottom margins/paddings are respected, but with display: inline they are not.
+Compared to display: block, the major difference is that display: inline-block does not add a line-break after the element, so the element can sit next to other elements.
+```
+也就是说inline可以无视定义在其中的width, height, margin, padding，如下图所示：
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/floatinline,inline-block,block.png?raw=true)
+
+[overflow的定义](https://www.w3schools.com/css/css_overflow.asp)如下，可以限定block大小，引入滚动条以显示容纳不下的内容。
+```
+The CSS overflow property controls what happens to content that is too big to fit into an area.
+```
+
 ### 6. CSS排版：Flex排版
 ### 7. CSS动画与绘制：动画
 ### 8. CSS动画与绘制：颜色
