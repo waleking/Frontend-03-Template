@@ -112,7 +112,7 @@ CSS控制表现
 Animation
 - 使用keyframes定义动画关键帧
 - 使用animation属性去使用关键帧
-- 一个例子：
+- 一个例子（见代码[animation.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/animation.html)）：
 ```
 @keyframes mykf{
   from {background: red;}
