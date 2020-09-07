@@ -185,5 +185,9 @@ HSL的一个具体动画例子如代码[hsl_animation.html](https://github.com/w
 data:image/svg+xml,<svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg"><ellipse cx="300" cy="150" rx="200" ry="80" style="fill:rgb(200,100,50);stroke:rgb(0,0,100);stroke-width:2"/> </svg>
 ```
 svg中支持path，因此可以绘制任意图形。
-作业：对css属性进行分类，最好是分到layout和render的下一层。
+
+
+## 作业：对css属性进行分类
+要求：最好是分到layout和render的下一层。
+
 参见[css\_properties\_mindmap.pdf](https://github.com/waleking/Frontend-03-Template/blob/master/week06/css_properties_mindmap.pdf)。
