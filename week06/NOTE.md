@@ -162,3 +162,22 @@ HSL的一个具体动画例子如代码[hsl_animation.html](https://github.com/w
 ![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/hsl.png?raw=true)
 
 ### 9. CSS动画与绘制：绘制
+绘制
+- 几何图形
+  - border（不推荐使用border去绘制五角星等几何图形，如果真的要去实现几何图形，需要使用svg）
+  - box-shadow
+  - border-radius
+- 文字（矢量图）
+  - font
+  - text-decoration
+- 位图
+  - background-image
+
+真正绘制时需要依赖底层图形库，如在手机上依赖skia，windows上依赖GDI，更底层的是使用Shader去绘制。
+
+绘制几何图形的推荐方法：data uri + svg，例如要绘制椭圆可以在浏览器的地址栏中输入如下信息，或者使用代码[svg.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/svg.html)
+```
+data:image/svg+xml,<svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg"><ellipse cx="300" cy="150" rx="200" ry="80" style="fill:rgb(200,100,50);stroke:rgb(0,0,100);stroke-width:2"/> </svg>
+```
+svg中支持path，因此可以绘制任意图形。
+作业：对css属性进行分类，最好是分到layout和render的下一层。
