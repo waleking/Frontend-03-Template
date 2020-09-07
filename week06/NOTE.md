@@ -191,3 +191,6 @@ svg中支持path，因此可以绘制任意图形。
 要求：最好是分到layout和render的下一层。
 
 参见[css\_properties\_mindmap.pdf](https://github.com/waleking/Frontend-03-Template/blob/master/week06/css_properties_mindmap.pdf)。
+
+### 遗留问题
+BFC合并还不清楚。
