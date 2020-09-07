@@ -66,6 +66,11 @@
   - ...
 - and block boxes with 'overflow' other than 'visible'.
 
+BFC合并发生之后会产生什么影响
+- block box && overflow: visible
+  - BFC合并与float
+  - BFC合并与margin collapse
+
 附：[Block formatting contexts](https://www.w3.org/TR/CSS2/visuren.html#block-formatting)定义：
 ```
 Floats, absolutely positioned elements, block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes, and block boxes with 'overflow' other than 'visible' (except when that value has been propagated to the viewport) establish new block formatting contexts for their contents.
