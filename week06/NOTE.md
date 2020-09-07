@@ -104,5 +104,61 @@ The CSS overflow property controls what happens to content that is too big to fi
 
 ### 6. CSS排版：Flex排版
 ### 7. CSS动画与绘制：动画
+CSS控制表现
+- 控制元素的位置，尺寸信息
+- 控制绘制、渲染的信息
+- 控制交互与动画的信息
+
+Animation
+- 使用keyframes定义动画关键帧
+- 使用animation属性去使用关键帧
+- 一个例子：
+```
+@keyframes mykf{
+  from {background: red;}
+  to {background: yellow;}
+}
+
+div {
+  animation: mykf 5s infinite;
+}
+```
+
+- Animation的六个属性：
+  - animation-name 动画的名称
+  - animation-duration 动画的时长
+  - animation-timing-function 动画的时间曲线
+  - animation-delay 动画开始前的延迟
+  - animation-iteration-count 动画的播放次数
+  - animation-direction 动画的方向
+
+- Animation的另一个例子，可以分段定义每一帧的timing-function
+```
+@keyframes mykf{
+  0% {top: 0; transition: top ease;}
+  50% {top: 0; transition: top ease-in;}
+  75% {top: 0; transition: top ease-out;}
+  100% {top: 0; transition: top linear;}
+}
+```
+- Transition 的四个属性：
+  - transition-property 要变换的属性
+  - transition-duration 变换的时长
+  - transition-timing-function 时间曲线，三次贝塞尔曲线([cubic-bezier](https://cubic-bezier.com/#.3,.4,.5,1.6))
+    - 内置的三次贝塞尔曲线：ease（最自然的变化），linear，ease-in（常常用于退出动画，例如有元素要退出屏幕），ease-out（屏幕外的东西从远处飞来的感觉，元素出现的动画）
+  - transition-delay 延迟
+
+
 ### 8. CSS动画与绘制：颜色
+- 红绿蓝RGB三原色进行色彩合成的原理由视锥细胞所决定。
+- CMY三原色——品红(magenta)、黄(yellow)、青(cyan)——是红、绿、蓝三原色的补色，颜料的作用原理是吸收光，反射剩余部分，因此印刷行业中使用CMY补色。
+- CMYK中的K是黑色(black)，因成本问题，黑色避免使用C, M, Y三色去调。
+- HSL: 色相Hue（六种基本颜色拼成了一个色盘）, 纯度Saturation, 亮度Lightness。其中Lightness到0的是黑色，到100的时候是白色。
+  - W3C体系推荐使用
+- HSV: Hue, Saturation, 色值Value（Brightness）
+  - 可以和HSL互转
+
+HSL的一个具体动画例子如代码[hsl_animation.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/hsl_animation.html)，非动画的版本如代码[hsl.html](https://github.com/waleking/Frontend-03-Template/blob/master/week06/hsl.html)，效果如下：
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week06/hsl.png?raw=true)
+
 ### 9. CSS动画与绘制：绘制

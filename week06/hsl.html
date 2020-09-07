@@ -1,0 +1,49 @@
+<style>
+.button {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 2em .55em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    border-radius: .5em;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    color: white;
+    border: solid 1px;
+    margin: 3px 0 3px 0;
+}
+
+.button60 {
+    font: 20px/100% Arial, Helvetica, sans-serif;
+}
+</style>
+
+<div id="root"></div>
+
+<script>
+
+var h = 0;
+var step = 10;
+var root = document.getElementById("root");
+for(let i = 0; i<360/step; i++){
+    var btn = document.createElement("div");
+    if(h%60==0){
+        btn.className = "button button60";
+    } else {
+        btn.className = "button";
+    }
+    
+    btn.style.borderColor=`hsl(${h}, 95%, 45%)`;
+    btn.style.background =`hsl(${h}, 95%, 45%)`;
+
+    var textnode = document.createTextNode(`${h}`);
+    btn.appendChild(textnode);
+    
+    root.appendChild(btn);
+
+    h = h + step;
+    h = h % 360;
+}
+</script>
