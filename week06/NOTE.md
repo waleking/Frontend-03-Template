@@ -186,3 +186,4 @@ data:image/svg+xml,<svg width="100%" height="100%" version="1.1" xmlns="http://w
 ```
 svg中支持path，因此可以绘制任意图形。
 作业：对css属性进行分类，最好是分到layout和render的下一层。
+参见[css\_properties\_mindmap.pdf](https://github.com/waleking/Frontend-03-Template/blob/master/week06/css_properties_mindmap.pdf)。
