@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0074)http://www.sagehill.net/livedtd/xhtml1-transitional/xhtml-special.ent.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>xhtml-special.ent</title>
+<link rel="stylesheet" type="text/css" href="./xhtml-special.ent_files/livedtd.css">
+<style type="text/css">
+  STRONG { font-weight: bold; color: red;}
+  .COMMENT { font-style:italic; color: #A8A8A8;}
+</style>
+</head>
+<body onload="parent.file.document.open();parent.file.document.write(&#39;&lt;BODY TOPMARGIN=0&gt;&lt;B&gt;xhtml-special.ent&lt;/B&gt;&lt;/BODY&gt;&#39;);parent.file.document.close()"><!--?LIVEDTD ENDHEAD?-->
+<pre><span class="COMMENT">&lt;!-- Special characters for XHTML --&gt;</span>
+
+<span class="COMMENT">&lt;!-- Character entity set. Typical invocation:
+     &lt;!ENTITY % HTMLspecial PUBLIC
+        "-//W3C//ENTITIES Special for XHTML//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent"&gt;
+     %HTMLspecial;
+--&gt;</span>
+
+<span class="COMMENT">&lt;!-- Portions (C) International Organization for Standardization 1986:
+     Permission to copy in any form is granted for use with
+     conforming SGML systems and applications as defined in
+     ISO 8879, provided this notice is included in all copies.
+--&gt;</span>
+
+<span class="COMMENT">&lt;!-- Relevant ISO entity set is given unless names are newly introduced.
+     New names (i.e., not in ISO 8879 list) do not clash with any
+     existing ISO 8879 entity names. ISO 10646 character numbers
+     are given for each character, in hex. values are decimal
+     conversions of the ISO 10646 values and refer to the document
+     character set. Names are Unicode names. 
+--&gt;</span>
+
+<span class="COMMENT">&lt;!-- C0 Controls and Basic Latin --&gt;</span>
+&lt;!ENTITY quot    "&amp;#34;"&gt; <span class="COMMENT">&lt;!--  quotation mark, U+0022 ISOnum --&gt;</span>
+&lt;!ENTITY amp     "&amp;#38;#38;"&gt; <span class="COMMENT">&lt;!--  ampersand, U+0026 ISOnum --&gt;</span>
+&lt;!ENTITY lt      "&amp;#38;#60;"&gt; <span class="COMMENT">&lt;!--  less-than sign, U+003C ISOnum --&gt;</span>
+&lt;!ENTITY gt      "&amp;#62;"&gt; <span class="COMMENT">&lt;!--  greater-than sign, U+003E ISOnum --&gt;</span>
+&lt;!ENTITY apos	 "&amp;#39;"&gt; <span class="COMMENT">&lt;!--  apostrophe = APL quote, U+0027 ISOnum --&gt;</span>
+
+<span class="COMMENT">&lt;!-- Latin Extended-A --&gt;</span>
+&lt;!ENTITY OElig   "&amp;#338;"&gt; <span class="COMMENT">&lt;!--  latin capital ligature OE,
+                                    U+0152 ISOlat2 --&gt;</span>
+&lt;!ENTITY oelig   "&amp;#339;"&gt; <span class="COMMENT">&lt;!--  latin small ligature oe, U+0153 ISOlat2 --&gt;</span>
+<span class="COMMENT">&lt;!-- ligature is a misnomer, this is a separate character in some languages --&gt;</span>
+&lt;!ENTITY Scaron  "&amp;#352;"&gt; <span class="COMMENT">&lt;!--  latin capital letter S with caron,
+                                    U+0160 ISOlat2 --&gt;</span>
+&lt;!ENTITY scaron  "&amp;#353;"&gt; <span class="COMMENT">&lt;!--  latin small letter s with caron,
+                                    U+0161 ISOlat2 --&gt;</span>
+&lt;!ENTITY Yuml    "&amp;#376;"&gt; <span class="COMMENT">&lt;!--  latin capital letter Y with diaeresis,
+                                    U+0178 ISOlat2 --&gt;</span>
+
+<span class="COMMENT">&lt;!-- Spacing Modifier Letters --&gt;</span>
+&lt;!ENTITY circ    "&amp;#710;"&gt; <span class="COMMENT">&lt;!--  modifier letter circumflex accent,
+                                    U+02C6 ISOpub --&gt;</span>
+&lt;!ENTITY tilde   "&amp;#732;"&gt; <span class="COMMENT">&lt;!--  small tilde, U+02DC ISOdia --&gt;</span>
+
+<span class="COMMENT">&lt;!-- General Punctuation --&gt;</span>
+&lt;!ENTITY ensp    "&amp;#8194;"&gt; <span class="COMMENT">&lt;!-- en space, U+2002 ISOpub --&gt;</span>
+&lt;!ENTITY emsp    "&amp;#8195;"&gt; <span class="COMMENT">&lt;!-- em space, U+2003 ISOpub --&gt;</span>
+&lt;!ENTITY thinsp  "&amp;#8201;"&gt; <span class="COMMENT">&lt;!-- thin space, U+2009 ISOpub --&gt;</span>
+&lt;!ENTITY zwnj    "&amp;#8204;"&gt; <span class="COMMENT">&lt;!-- zero width non-joiner,
+                                    U+200C NEW RFC 2070 --&gt;</span>
+&lt;!ENTITY zwj     "&amp;#8205;"&gt; <span class="COMMENT">&lt;!-- zero width joiner, U+200D NEW RFC 2070 --&gt;</span>
+&lt;!ENTITY lrm     "&amp;#8206;"&gt; <span class="COMMENT">&lt;!-- left-to-right mark, U+200E NEW RFC 2070 --&gt;</span>
+&lt;!ENTITY rlm     "&amp;#8207;"&gt; <span class="COMMENT">&lt;!-- right-to-left mark, U+200F NEW RFC 2070 --&gt;</span>
+&lt;!ENTITY ndash   "&amp;#8211;"&gt; <span class="COMMENT">&lt;!-- en dash, U+2013 ISOpub --&gt;</span>
+&lt;!ENTITY mdash   "&amp;#8212;"&gt; <span class="COMMENT">&lt;!-- em dash, U+2014 ISOpub --&gt;</span>
+&lt;!ENTITY lsquo   "&amp;#8216;"&gt; <span class="COMMENT">&lt;!-- left single quotation mark,
+                                    U+2018 ISOnum --&gt;</span>
+&lt;!ENTITY rsquo   "&amp;#8217;"&gt; <span class="COMMENT">&lt;!-- right single quotation mark,
+                                    U+2019 ISOnum --&gt;</span>
+&lt;!ENTITY sbquo   "&amp;#8218;"&gt; <span class="COMMENT">&lt;!-- single low-9 quotation mark, U+201A NEW --&gt;</span>
+&lt;!ENTITY ldquo   "&amp;#8220;"&gt; <span class="COMMENT">&lt;!-- left double quotation mark,
+                                    U+201C ISOnum --&gt;</span>
+&lt;!ENTITY rdquo   "&amp;#8221;"&gt; <span class="COMMENT">&lt;!-- right double quotation mark,
+                                    U+201D ISOnum --&gt;</span>
+&lt;!ENTITY bdquo   "&amp;#8222;"&gt; <span class="COMMENT">&lt;!-- double low-9 quotation mark, U+201E NEW --&gt;</span>
+&lt;!ENTITY dagger  "&amp;#8224;"&gt; <span class="COMMENT">&lt;!-- dagger, U+2020 ISOpub --&gt;</span>
+&lt;!ENTITY Dagger  "&amp;#8225;"&gt; <span class="COMMENT">&lt;!-- double dagger, U+2021 ISOpub --&gt;</span>
+&lt;!ENTITY permil  "&amp;#8240;"&gt; <span class="COMMENT">&lt;!-- per mille sign, U+2030 ISOtech --&gt;</span>
+&lt;!ENTITY lsaquo  "&amp;#8249;"&gt; <span class="COMMENT">&lt;!-- single left-pointing angle quotation mark,
+                                    U+2039 ISO proposed --&gt;</span>
+<span class="COMMENT">&lt;!-- lsaquo is proposed but not yet ISO standardized --&gt;</span>
+&lt;!ENTITY rsaquo  "&amp;#8250;"&gt; <span class="COMMENT">&lt;!-- single right-pointing angle quotation mark,
+                                    U+203A ISO proposed --&gt;</span>
+<span class="COMMENT">&lt;!-- rsaquo is proposed but not yet ISO standardized --&gt;</span>
+
+<span class="COMMENT">&lt;!-- Currency Symbols --&gt;</span>
+&lt;!ENTITY euro   "&amp;#8364;"&gt; <span class="COMMENT">&lt;!--  euro sign, U+20AC NEW --&gt;</span>
+<!--?LIVEDTD EOF?-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body></html>
