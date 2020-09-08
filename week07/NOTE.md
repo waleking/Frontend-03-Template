@@ -40,6 +40,16 @@ XHTML的DTD与XML namespace
 
 通过阅读[xhtml-symbol.ent](https://github.com/waleking/Frontend-03-Template/blob/master/week07/xhtml-symbol.ent.html)，可以知道希腊字母可以采用实体的方式输入到html中并加以显示，如代码[entities_symbol](https://github.com/waleking/Frontend-03-Template/blob/master/week07/entities_symbol.html)。
 
+[xhtml-special.ent](https://github.com/waleking/Frontend-03-Template/blob/master/week07/xhtml-special.ent.html)中一定要记住的内容，否则直接输入<, >会报错，输入&会认为需要转义：
+```
+&lt;!ENTITY quot    "&amp;#34;"&gt; <span class="COMMENT">&lt;!--  quotation mark, U+0022 ISOnum --&gt;</span>
+&lt;!ENTITY amp     "&amp;#38;#38;"&gt; <span class="COMMENT">&lt;!--  ampersand, U+0026 ISOnum --&gt;</span>
+&lt;!ENTITY lt      "&amp;#38;#60;"&gt; <span class="COMMENT">&lt;!--  less-than sign, U+003C ISOnum --&gt;</span>
+&lt;!ENTITY gt      "&amp;#62;"&gt; <span class="COMMENT">&lt;!--  greater-than sign, U+003E ISOnum --&gt;</span>
+```
+
+其他的知识点直接去看HTML5，因为HTML5不再需要xhtml的DTD，HTML5也不再认为自己是SGML的一个子集。
+
 附：什么是HTML Entities？
 根据[w3schools对HTML Entities的定义](https://www.w3schools.com/html/html_entities.asp)：Some characters are reserved in HTML. If you use the less than (<) or greater than (>) signs in your text, the browser might mix them with tags. Character entities are used to display reserved characters in HTML. A character entity looks like this: `&entity_name;` OR `&#entity_number;`
 根据这一段描述，可以知道nbsp在html中的用法是`&nbsp;`，其效果可以参考[whitespace.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/whitespace.html)。
