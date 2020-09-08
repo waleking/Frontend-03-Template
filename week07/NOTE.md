@@ -38,6 +38,8 @@ XHTML的DTD与XML namespace
                                   U+00A0 ISOnum --&gt;</span>
 ```
 
+通过阅读[xhtml-symbol.ent](https://github.com/waleking/Frontend-03-Template/blob/master/week07/xhtml-symbol.ent.html)，可以知道希腊字母可以采用实体的方式输入到html中并加以显示，如代码[entities_symbol](https://github.com/waleking/Frontend-03-Template/blob/master/week07/entities_symbol.html)。
+
 附：什么是HTML Entities？
 根据[w3schools对HTML Entities的定义](https://www.w3schools.com/html/html_entities.asp)：Some characters are reserved in HTML. If you use the less than (<) or greater than (>) signs in your text, the browser might mix them with tags. Character entities are used to display reserved characters in HTML. A character entity looks like this: `&entity_name;` OR `&#entity_number;`
 根据这一段描述，可以知道nbsp在html中的用法是`&nbsp;`，其效果可以参考[whitespace.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/whitespace.html)。
