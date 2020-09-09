@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import Board from './Board';
 import { calculateWinner} from '../helper';
 
+const styles = {
+    width: '200px',
+    margin: '20px auto',
+};
+
 const Game = () => {
     const [board, setBoard] = useState(Array(9).fill(null));
     const [xIsNext, setXisNext] = useState(true); // X is the first player to play the game
@@ -21,11 +26,24 @@ const Game = () => {
 
     };
 
-    const renderMoves = () => {
-    };
+    const renderMoves = () => (
+        <button onClick={()=>setBoard(Array(9).fill(null))}>
+            Play Game!
+        </button>
+    );
 
     return (
-        <Board squares={board} clickHandler={handleClick} />
+        <React.Fragment>
+            <Board squares={board} clickHandler={handleClick} />
+            <div style={styles}>
+                <p>
+                    {winner? 
+                        'Winner: '+ winner 
+                        : 'Next Player: ' + (xIsNext? 'X': 'O')} 
+                </p>
+                {renderMoves()}
+            </div>
+        </React.Fragment>
     );
 };
 export default Game;
