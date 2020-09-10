@@ -8,33 +8,45 @@ const styles = {
 };
 
 const Game = () => {
-    const [board, setBoard] = useState(Array(9).fill(null));
+    const [history, setHistory] = useState([Array(9).fill(null)]); // time travel of the board
+    const [stepNumber, setStepNumber] = useState(0);
     const [xIsNext, setXisNext] = useState(true); // X is the first player to play the game
-    const winner = calculateWinner(board); // winner is also updated? 
+    const winner = calculateWinner(history[stepNumber]); // winner is also updated? 
 
     const handleClick = (i) => {
-        const boardCopy = [...board]; // why copy the board? and need deep copy.
-        if(winner || boardCopy[i]) return;
+        const timeInHistory = history.slice(0, stepNumber + 1);
+        const current = timeInHistory[stepNumber];
+        const squares = [...current]; // keep the previous state immutable
+        if(winner || squares[i]) return;
         // Put an X or O in the clicked square
-        boardCopy[i] = xIsNext? 'X': 'O'; 
+        squares[i] = xIsNext? 'X': 'O'; 
         // set states
-        setBoard(boardCopy);
+        setHistory([...timeInHistory, squares]); // add the current state
+        setStepNumber(stepNumber + 1);
         setXisNext(!xIsNext);
     };
 
-    const jumpTo = () => {
-
+    const jumpTo = (step) => {
+        // Code here is very tricky. We didn't set history yet, since 
+        // the history will be updated in handleClick.
+        setStepNumber(step); 
+        setXisNext(step % 2===0);
     };
 
     const renderMoves = () => (
-        <button onClick={()=>setBoard(Array(9).fill(null))}>
-            Play Game!
-        </button>
+        history.map((_board, move) => { 
+            const destination = move ? `Go to move #${move}`: `Go to start`; 
+            return (
+                <li key={move}>
+                    <button onClick={() => jumpTo(move)}>{destination}</button> 
+                </li>
+            );
+        })
     );
 
     return (
         <React.Fragment>
-            <Board squares={board} clickHandler={handleClick} />
+            <Board squares={history[stepNumber]} clickHandler={handleClick} />
             <div style={styles}>
                 <p>
                     {winner? 
