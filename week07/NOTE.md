@@ -90,3 +90,35 @@ DOM API的四个部分：
 - Range API 更精确的操作DOM树，在HTML编辑器中使用
   
 ![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week07/DOM_Node.png?raw=true)
+
+导航类操作(节点Node导航)：
+- parentNode
+- childNodes
+- firstChild
+- lastChild
+- nextSibling
+- previousSibling
+  
+导航类操作(元素Element导航，避免取到TextNode):
+- parentElement（为了API能够对称，其实功能和parentNode一样）
+- children
+- firstElementChild
+- lastElementChild
+- nextElementSibling
+- previousElementSibling
+  
+修改操作
+- appendChild
+- insertBefore （没有insertAfter这个API的原因是为了保持最小化原则，insertBefore和appendChild一起就可以覆盖所有情况）
+- removeChild（无法移除一个Node自身，但是可以通过访问parent来实现，返回oldChild）
+- replaceChild（功能上相当于一次remove，然后一次insert；但是有的浏览器可能是一次性替换掉）
+
+高级操作
+- compareDocumentPosition 比较两个节点的关系。
+- contains 检查一个节点是否包含另一个节点。
+- isEqualNode 检查两个节点是否相同。The Node.isEqualNode() method tests whether two nodes are equal. Two nodes are equal when they have the same type, defining characteristics (for elements, this would be their ID, number of children, and so forth), its attributes match, and so on. 
+- isSameNode 检查两个节点是否是同一个节点，等价于JavaScript中的===
+- cloneNode 复制一个节点，如果传入参数为true，那么可以做deep copy
+  
+
+  
