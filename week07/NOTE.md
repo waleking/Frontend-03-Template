@@ -50,8 +50,25 @@ XHTML的DTD与XML namespace
 
 其他的知识点直接去看HTML5，因为HTML5不再需要xhtml的DTD，HTML5也不再认为自己是SGML的一个子集。
 
+另外两个常用的namespace是MathML和SVG。
+
+实际上，HTML5将HTML写法和XHTML的写法作为两种不同的语法供使用者选择：如果选择不包含self-closing tags的严格版本，那么使用XHTML版本的HTML5。
+
 附：什么是HTML Entities？
 根据[w3schools对HTML Entities的定义](https://www.w3schools.com/html/html_entities.asp)：Some characters are reserved in HTML. If you use the less than (<) or greater than (>) signs in your text, the browser might mix them with tags. Character entities are used to display reserved characters in HTML. A character entity looks like this: `&entity_name;` OR `&#entity_number;`
 根据这一段描述，可以知道nbsp在html中的用法是`&nbsp;`，其效果可以参考[whitespace.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/whitespace.html)。
 
 有关white space引起的layout的问题在[When does white space matter in HTML? | Patrick Brosset | Medium](https://medium.com/@patrickbrosset/when-does-white-space-matter-in-html-b90e8a7cdd33)做了详细说明，特别是这篇文章也涉及到了BFC和IFC，对于巩固CSS的知识很有帮助。
+
+## 2. HTML标签语义
+语义化标签设计时首要关心语义，其次再考虑表现。
+- main标签在整个页面中只有一个，提示该部分是页面的主体部分。
+- strong 表示重要, em表示重音。
+- ol和ul的讨论，不能为了表现而去更改语义，而是先确定语义，然后用css更改表现。
+- nav: 导航区的部分可以根据语义，将div替换为nav
+- dfn: 提供定义，在表现形式上，默认的是斜体
+- pre: 表示预先调整好格式的一段文本。从表现效果上看，类似于css中的white-space:pre
+- code: 围绕一段代码
+
+代码[wiki.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/wiki.html)的效果如下：
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week07/wiki.html.png?raw=true)
