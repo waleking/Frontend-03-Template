@@ -72,3 +72,21 @@ XHTML的DTD与XML namespace
 
 代码[wiki.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/wiki.html)的效果如下：
 ![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week07/wiki.html.png?raw=true)
+
+## 3. HTML语法
+合法元素
+- Element: `<tagname></tagname>`
+- Text: text
+- Comment: `<!-- comments -->`
+- DocumentType: `<!Doctype html>`
+- ProcessingInstruction: <?a 1?> 预处理，设计的不成功，在线上不应该出现带问号的语法
+- CDATA: `<![CDATA[ ]]>`, CDATA不需要考虑转义的问题
+
+## 4. 浏览器API | DOM API
+DOM API的四个部分：
+- 废的部分！traversal 系列
+- 节点部分的API
+- 事件部分的API
+- Range API 更精确的操作DOM树，在HTML编辑器中使用
+  
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week07/DOM_Node.png?raw=true)
