@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   useSearchEngine = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // prevent the default reloading
     this.setState({
       searchReturnValues: []
     })
