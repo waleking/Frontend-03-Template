@@ -127,13 +127,13 @@ DOM API的四个部分：
 什么是Bubbling: When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.
 
 以下是最简单的Bubbling的例子，当点击`<div>`下的`<em>`元素的时候，弹窗也出现。
-```
+```html
 <div onclick="alert('The handler!')">
   <em>If you click on <code>EM</code>, the handler on <code>DIV</code> runs.</em>
 </div>
 ```
 进一步的例子是[bubbling.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/wiki.html)：
-```
+```html
 <form onclick="alert(`form, and event on ${window.event.target.tagName}`);">FORM
     <div onclick="alert(`div, and event on ${event.target.tagName}`)">DIV
         <p onclick="alert(`p, and event on ${event.target.tagName}`)">P</p>
@@ -151,7 +151,7 @@ DOM API的四个部分：
 ![alt text](https://www.w3.org/TR/DOM-Level-3-Events/images/eventflow.svg)
 
 在如下代码中进行capturing和bubbling的练习，addEventListener中使用true来标记capturing。
-```
+```html
 The capturing and the bubbling. 
 <form id="capturing_and_bubbling">FORM
     <div>DIV
@@ -178,4 +178,40 @@ Bubbling FORM
 ```
 一个疑问，什么时候用capturing呢？
 
+### winter老师的例子
+```html
+<div id="a" style="width:100%;height:300px;background-color: lightblue;">Outer
+    <div id="b" style="width:100%;height:200px;background-color: pink;">Inner</div>
+</div>
 
+<script>
+    let outer = document.getElementById("a");
+    let inner = document.getElementById("b");
+    inner.addEventListener("click", ()=>{console.log("clicked inner, capturing")}, true);
+    outer.addEventListener("click", ()=>{console.log("clicked outer, capturing")}, true);
+    inner.addEventListener("click", ()=>{console.log("clicked inner, bubbling")});
+    outer.addEventListener("click", ()=>{console.log("clicked outer, bubbling")});
+</script>
+```
+那么点击inner的运行结果如下：
+```
+clicked outer, capturing
+clicked inner, capturing
+clicked inner, bubbling
+clicked outer, bubbling
+```
+
+如果我们将script代码中inner的事件的两个handler调换一下顺序：
+```javascript
+    inner.addEventListener("click", ()=>{console.log("clicked inner, bubbling")});
+    outer.addEventListener("click", ()=>{console.log("clicked outer, bubbling")});
+    inner.addEventListener("click", ()=>{console.log("clicked inner, capturing")}, true);
+    outer.addEventListener("click", ()=>{console.log("clicked outer, capturing")}, true);
+```
+那么点击inner的运行结果如下，其原因如[bubbling and capturing| javascript.info](https://javascript.info/bubbling-and-capturing)所介绍：Note that while formally there are 3 phases, the 2nd phase (“target phase”: the event reached the element) is not handled separately: handlers on both capturing and bubbling phases trigger at that phase。也就是说加在inner之上的capturing和bubbling都被当做target phase的event handler，那么其执行的先后顺序只和它们在代码中定义的先后顺序有关。
+```
+clicked outer, capturing
+clicked inner, bubbling
+clicked inner, capturing
+clicked outer, bubbling
+```
