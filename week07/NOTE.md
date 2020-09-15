@@ -318,3 +318,64 @@ fragment是Node的一个子类。当appendChild的对象是fragment的时候，�
 ```
 
 对DOM树要高效操作的话，可以使用range和fragment这一对搭档。
+
+## 7. CSSOM
+CSSOM: CSS Object Model。CSSOM也需要从DOM `document.styleSheets` 出发去访问，因为css是嵌在html里面的。
+
+Rules
+- document.styleSheets[0].cssRules
+- document.styleSheets[0].insertRule("p {color: pink;}", 0)
+- document.styleSheets[0].removeRule(0)
+- CSSStyleRule
+  - selector String
+  - style K-V 结构
+
+CSSOM还能访问computed style：getComputedStyle
+- window.getComputedStyle(elt, pseudoElt)
+  - elt 想要获取的元素
+  - pseudoElt, 可选，伪元素
+- 例子
+  - getComputedStyle(document.querySelector("body"), "::before")
+- 用途
+  - 访问transform
+  - 访问动画的中间帧
+
+## 8. CSSOM view
+- 得到layout, 以及render之后的一些信息。
+- CSSOM view和最终浏览器画出来的视图有关
+
+window
+- window.innerHeight, window.innerWidth (viewport区域)
+- window.outerHeight, window.outerWidth (浏览器整个窗口，比如将inspector调出来，那么也会把inspector计算在内)
+- window.devicePixelRatio (非常重要的部分！屏幕上的物理像素和代码中的逻辑像素的比值：正常的是1:1，Retina屏幕上是1:2，DPR和我们做布局是非常相关的。我们写1px的时候，因为物理像素和逻辑像素不一定重合，所以不一定能在机器上获得1px)
+- window.screen
+  - window.screen.width
+  - window.screen.height
+  - window.screen.availWidth
+  - window.screen.availHeight
+
+Window API
+- window.open("about:blank", "_blank", "width=100, height=100, left=100, right=100") 开一个新的浏览器窗口
+- moveTo(x, y) 互联网广告强制弹出这样的窗口骚扰用户
+- moveBy(x, y)
+- resizeTo(width, height)
+- resizeBy(width, height)
+
+scroll
+- 元素相关(overflow:scroll的元素)
+  - scrollTop, scrollLeft 当前滚动到的位置
+  - scrollWidth, scrollHeight 可滚动内容的宽度和高度
+  - scroll(x,y)
+  - scrollBy(x,y)
+  - scrollIntoView() 强制滚动到屏幕的可见区域？
+- window相关(有滚动条的顶层window)
+  - scrollX
+  - scrollY
+  - scroll(x,y)
+  - scrollBy(x,y)
+
+layout
+- getClientRects() 用于获取元素生成的多个盒
+- getBoundingClientRect() returns the size of an element and its position relative to the viewport
+- 一个例子：[rect.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/rect.html)中的div生成了6个盒.
+- 使用场景：这两个API可以用在获取一个元素和它的父元素的差值，获取相对位置，在拖拽效果中使用
