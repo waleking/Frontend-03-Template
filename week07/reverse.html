@@ -19,10 +19,12 @@
     function reverseByMethod1(){
         const container = document.getElementById("container");
         const childList = document.querySelectorAll("#container *");
-        for(let child of childList){
-            container.removeChild(child);
-        }
-        for(let i = childList.length -1 ; i>=0; i--){
+        //挪动节点的时候是不需要将它先remove再插入的
+        //for(let child of childList){
+        //    container.removeChild(child);
+        //}
+        //挪动n-1个节点（最后一个不用挪）
+        for(let i = childList.length - 2; i>=0; i--){
             container.appendChild(childList[i]);
         }
     }

@@ -217,7 +217,7 @@ clicked outer, bubbling
 ```
 
 ## Range API
-题外话：iterator API是一个处于淘汰状态的API。将一个元素的所有子元素逆序可以通过remove children之后，再逆序加回来的办法来实现，[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)：
+题外话：iterator API是一个处于淘汰状态的API。将一个元素的所有子元素逆序可以通过逆序加回来的办法来实现，[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)：
 ```html
 <style>
     body *{
@@ -240,9 +240,11 @@ clicked outer, bubbling
     function reverseByMethod1(){
         const container = document.getElementById("container");
         const childList = document.querySelectorAll("#container *");
-        for(let child of childList){
-            container.removeChild(child);
-        }
+        //挪动节点的时候是不需要将它先remove再插入的
+        //for(let child of childList){
+        //    container.removeChild(child);
+        //}
+        //挪动n-1个节点（最后一个不用挪）
         for(let i = childList.length -1 ; i>=0; i--){
             container.appendChild(childList[i]);
         }
