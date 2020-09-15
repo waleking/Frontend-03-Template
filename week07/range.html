@@ -1,0 +1,61 @@
+<style>
+    body * {
+        border: solid 1px blue;
+    }
+</style>
+
+<div id="container">
+    container
+    <div>
+        children group 1
+        <ol>
+            <li>item1</li>
+            <li>item2</li>
+            <li>item3</li>
+        </ol>
+    </div>
+    <div>
+        children group 2
+        <ol>
+            <li>item a</li>
+            <li>item b</li>
+            <li>item c</li>
+            <li>item d</li>
+            <li>item e</li>
+        </ol>
+        </ol>
+    </div>
+</div>
+
+<div id="a">123<span style="background-color: pink;">456789</span>0123456789</div>
+<button onclick="remove()">remove fragment</button>
+
+<div id="editor">
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+    Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of
+    Lorem Ipsum.
+</div>
+
+<script>
+    // const container = document.getElementById("container");
+    // const childElements = container.children;
+    // const range = new Range();
+    // range.setStart(container, 1);
+    // range.setEnd(container, 2);// it may fail when the offset is beyond the children list
+
+    function remove() {
+        const range = new Range();
+        range.setStart(document.getElementById("a").childNodes[0], 3);
+        range.setEnd(document.getElementById("a").childNodes[2], 3);
+        range.extractContents();
+    }
+
+    function highlight(){
+        // TODO 
+        const range = new Range();
+        // window.Selection
+    }
+</script>

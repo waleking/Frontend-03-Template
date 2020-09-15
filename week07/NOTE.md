@@ -216,7 +216,7 @@ clicked inner, capturing
 clicked outer, bubbling
 ```
 
-## 6. Range API
+## 6. Range API 和fragment
 题外话：iterator API是一个处于淘汰状态的API。将一个元素的所有子元素逆序可以通过逆序加回来的办法来实现，[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)，但是需要做n-1(n是所有子元素的个数)次DOM操作，也需要n-1次重排，对性能影响很大：
 ```html
 <style>
@@ -278,7 +278,7 @@ var fragment = range.extractContents() #相当于删的操作
 range.insertNode(document.createTextNode("aaaa")) #相当于增加的操作
 ```
 
-fragment是Node的一个子类。当appendChild的对象是fragment的时候，可以将fragment中所有的node加到DOM树中，这一特性可以让我们完成一些很精细的DOM树的操作。fragment上也可以做querySelector等DOM树上的操作，也可以addEventListener。React加了fragment对象，其底层也是用DOM的fragment去实现的。如下[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)只用操作两次DOM树就能实现所有子元素的翻转，整个过程只进行了两次重排。
+fragment是Node的一个子类。当appendChild的对象是fragment的时候，可以将fragment中所有的node加到DOM树中，这一特性可以让我们完成一些很精细的DOM树的操作。fragment上也可以做querySelector等DOM树上的操作，也可以addEventListener。React加了fragment对象，其底层也是用DOM的fragment去实现的。如下[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)只用操作两次DOM树就能实现所有子元素的翻转，整个过程只进行了两次重排。
 ```html
 <style>
     body *{
