@@ -121,4 +121,61 @@ DOM API的四个部分：
 - cloneNode 复制一个节点，如果传入参数为true，那么可以做deep copy
   
 
+## 5. 事件API
+此小节的内容完全参考[Bubbling and capturing](https://javascript.info/bubbling-and-capturing)。
+### Bubbling
+什么是Bubbling: When an event happens on an element, it first runs the handlers on it, then on its parent, then all the way up on other ancestors.
+
+以下是最简单的Bubbling的例子，当点击`<div>`下的`<em>`元素的时候，弹窗也出现。
+```
+<div onclick="alert('The handler!')">
+  <em>If you click on <code>EM</code>, the handler on <code>DIV</code> runs.</em>
+</div>
+```
+进一步的例子是[bubbling.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/wiki.html)：
+```
+<form onclick="alert(`form, and event on ${window.event.target.tagName}`);">FORM
+    <div onclick="alert(`div, and event on ${event.target.tagName}`)">DIV
+        <p onclick="alert(`p, and event on ${event.target.tagName}`)">P</p>
+    </div>
+</form>
+```
+点击`p`元素之后，依次出现：`p and event on p`, `div and event on p`, `form and event on p`的弹窗。也就是事件如果发生在一个元素之上，首先由当前元素的handler来处理，然后由其父元素的handler来处理，然后依次是往外的祖先元素来处理。几乎所有的事件都会冒泡，除了个别的例如`focus`事件等。在冒泡过程中，handler看到的event带有属性target，表明事件是由哪一个element触发的。(event是Window.event的一个简写)
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week07/bubbling.png?raw=true)
+
+**如何中止Bubbling呢？**
+可以使用`event.stopPropagation()`，使得事件不再被ancestors处理。
+
+### Capturing
+根据[DOM Event Flow](https://www.w3.org/TR/DOM-Level-3-Events/#event-flow)标准的介绍，有三个阶段：capture phase, target phase, bubble phase。
+![alt text](https://www.w3.org/TR/DOM-Level-3-Events/images/eventflow.svg)
+
+在如下代码中进行capturing和bubbling的练习，addEventListener中使用true来标记capturing。
+```
+The capturing and the bubbling. 
+<form id="capturing_and_bubbling">FORM
+    <div>DIV
+        <p>P</p>
+    </div>
+</form>
   
+<script>
+    debugger;
+    for(let elem of document.querySelectorAll('#capturing_and_bubbling, #capturing_and_bubbling *')) {
+        elem.addEventListener("click", e => alert(`Capturing: ${elem.tagName}`), true);
+        elem.addEventListener("click", e => alert(`Bubbling: ${elem.tagName}`));
+    }
+</script>
+```
+点击最内层的p元素之后，依次出现alert信息为：
+```
+Capturing Form
+Capturing DIV 
+Capturing P
+Bubbling P
+Bubbling DIV
+Bubbling FORM
+```
+一个疑问，什么时候用capturing呢？
+
+
