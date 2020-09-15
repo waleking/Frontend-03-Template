@@ -379,3 +379,21 @@ layout
 - getBoundingClientRect() returns the size of an element and its position relative to the viewport
 - 一个例子：[rect.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/rect.html)中的div生成了6个盒.
 - 使用场景：这两个API可以用在获取一个元素和它的父元素的差值，获取相对位置，在拖拽效果中使用
+
+## 9. 其他浏览器相关的API
+API主要来自于W3C和ECMA两个组织
+
+标准化组织
+- khronos
+  - WebGL
+- ECMA
+  - ECMAScript
+- WHATWG
+  - HTML
+- W3C
+  - webaudio
+  - CG/WG
+  - css
+  - svg
+
+整理后的window所包含的API可以见[APIs.pdf](https://github.com/waleking/Frontend-03-Template/blob/master/week07/APIs.pdf)
