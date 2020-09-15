@@ -216,8 +216,8 @@ clicked inner, capturing
 clicked outer, bubbling
 ```
 
-## Range API
-题外话：iterator API是一个处于淘汰状态的API。将一个元素的所有子元素逆序可以通过逆序加回来的办法来实现，[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)：
+## 6. Range API
+题外话：iterator API是一个处于淘汰状态的API。将一个元素的所有子元素逆序可以通过逆序加回来的办法来实现，[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)，但是需要做n-1(n是所有子元素的个数)次DOM操作，也需要n-1次重排，对性能影响很大：
 ```html
 <style>
     body *{
@@ -240,7 +240,7 @@ clicked outer, bubbling
     function reverseByMethod1(){
         const container = document.getElementById("container");
         const childList = document.querySelectorAll("#container *");
-        //挪动节点的时候是不需要将它先remove再插入的
+        //挪动节点的时候是不需要将它先remove再插入的, DOM树在insert的时候是自动先做remove操作的
         //for(let child of childList){
         //    container.removeChild(child);
         //}
@@ -252,4 +252,69 @@ clicked outer, bubbling
 </script>
 ```
 
-Range API的出场：操作半个节点或者批量操作节点。这里`半个节点`是什么意思呢？
+Range API的出场：操作半个节点或者批量操作节点。
+```
+range = new Range()
+range.setStart(startNode, startOffset); #include startOffset 
+range.setStart(endNode, endOffset); #exclude endOffset 
+```
+这里`半个节点`是什么意思呢？原因是TextNode中文字的存在：If the startNode is a Node of type Text, Comment, or CDataSection, then startOffset is the number of characters from the start of startNode. For other Node types, startOffset is the number of child nodes between the start of the startNode. 此处startNode是指Range.setStart(startNode, startOffset)中的startNode。
+
+在文本编辑器中，可以处理文本高亮的情况：`document.getSelection().getRangeAt(0)`。由于有空白的TextNode，因此手工设置offset不容易，我们使用如下API：
+```
+range = new Range()
+range.setStartBefore()
+range.setEndBefore()
+range.setStartAfter()
+range.setEndAfter()
+
+range.selectNode() #此时和node API差不多
+range.selectNodeContents() #选中一个元素的所有内容
+```
+
+如何使用建立好的range：
+```
+var fragment = range.extractContents() #相当于删的操作
+range.insertNode(document.createTextNode("aaaa")) #相当于增加的操作
+```
+
+fragment是Node的一个子类。当appendChild的对象是fragment的时候，可以将fragment中所有的node加到DOM树中，这一特性可以让我们完成一些很精细的DOM树的操作。fragment上也可以做querySelector等DOM树上的操作，也可以addEventListener。React加了fragment对象，其底层也是用DOM的fragment去实现的。如下[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)只用操作两次DOM树就能实现所有子元素的翻转，整个过程只进行了两次重排。
+```html
+<style>
+    body *{
+        margin: 10px;
+        border: 1px solid blue;
+    }
+</style>
+
+<div id="container">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+</div>
+
+<button onclick="reverseByRange()">reverse by range</button>
+
+<script>
+    //author: winter
+    function reverseByRange(){
+        const container = document.getElementById("container");
+        const range = new Range();
+        range.selectNodeContents(container);
+
+        // DOM operation 1
+        const fragment = range.extractContents();
+        debugger;
+        let l = fragment.children.length;
+        while(l-- >0){
+            fragment.appendChild(fragment.children[l]);
+        }
+        // DOM operation 2
+        container.appendChild(fragment);
+    }
+</script>
+```
+
+对DOM树要高效操作的话，可以使用range和fragment这一对搭档。

@@ -14,11 +14,14 @@
 </div>
 
 <button onclick="reverseByMethod1()">reverse</button>
+<button onclick="reverseByMethod2()">reverse2</button>
+<button onclick="reverseByRange()">reverse by range</button>
 
 <script>
     function reverseByMethod1(){
         const container = document.getElementById("container");
         const childList = document.querySelectorAll("#container *");
+        debugger;
         //挪动节点的时候是不需要将它先remove再插入的
         //for(let child of childList){
         //    container.removeChild(child);
@@ -27,5 +30,32 @@
         for(let i = childList.length - 2; i>=0; i--){
             container.appendChild(childList[i]);
         }
+    }
+
+    //author: winter
+    function reverseByMethod2(){
+        const container = document.getElementById("container");
+        const childList = Array.prototype.slice.call(container.children); // slice可以应用在非Array上?
+        childList.reverse();
+        for(let child of childList){
+            container.appendChild(child);
+        }
+    }
+
+    //author: winter
+    function reverseByRange(){
+        const container = document.getElementById("container");
+        const range = new Range();
+        range.selectNodeContents(container);
+
+        // DOM operation 1
+        const fragment = range.extractContents();
+        debugger;
+        let l = fragment.children.length;
+        while(l-- >0){
+            fragment.appendChild(fragment.children[l]);
+        }
+        // DOM operation 2
+        container.appendChild(fragment);
     }
 </script>
