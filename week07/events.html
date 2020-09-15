@@ -1,0 +1,12 @@
+<div id="a" style="width:100%;height:300px;background-color: lightblue;">Outer
+    <div id="b" style="width:100%;height:200px;background-color: pink;">Inner</div>
+</div>
+
+<script>
+    let outer = document.getElementById("a");
+    let inner = document.getElementById("b");
+    inner.addEventListener("click", ()=>{console.log("clicked inner, capturing")}, true);
+    outer.addEventListener("click", ()=>{console.log("clicked outer, capturing")}, true);
+    inner.addEventListener("click", ()=>{console.log("clicked inner, bubbling")});
+    outer.addEventListener("click", ()=>{console.log("clicked outer, bubbling")});
+</script>

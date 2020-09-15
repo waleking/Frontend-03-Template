@@ -215,3 +215,39 @@ clicked inner, bubbling
 clicked inner, capturing
 clicked outer, bubbling
 ```
+
+## Range API
+题外话：iterator API是一个处于淘汰状态的API。将一个元素的所有子元素逆序可以通过remove children之后，再逆序加回来的办法来实现，[reverse.html](https://github.com/waleking/Frontend-03-Template/blob/master/week07/reverse.html)：
+```html
+<style>
+    body *{
+        margin: 10px;
+        border: 1px solid blue;
+    }
+</style>
+
+<div id="container">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+</div>
+
+<button onclick="reverseByMethod1()">reverse</button>
+
+<script>
+    function reverseByMethod1(){
+        const container = document.getElementById("container");
+        const childList = document.querySelectorAll("#container *");
+        for(let child of childList){
+            container.removeChild(child);
+        }
+        for(let i = childList.length -1 ; i>=0; i--){
+            container.appendChild(childList[i]);
+        }
+    }
+</script>
+```
+
+Range API的出场：操作半个节点或者批量操作节点。这里`半个节点`是什么意思呢？

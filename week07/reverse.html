@@ -1,0 +1,29 @@
+<style>
+    body *{
+        margin: 10px;
+        border: 1px solid blue;
+    }
+</style>
+
+<div id="container">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+</div>
+
+<button onclick="reverseByMethod1()">reverse</button>
+
+<script>
+    function reverseByMethod1(){
+        const container = document.getElementById("container");
+        const childList = document.querySelectorAll("#container *");
+        for(let child of childList){
+            container.removeChild(child);
+        }
+        for(let i = childList.length -1 ; i>=0; i--){
+            container.appendChild(childList[i]);
+        }
+    }
+</script>
