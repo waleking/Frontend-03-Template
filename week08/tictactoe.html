@@ -43,27 +43,42 @@
     // O = 1
     // "" = 0
     let pattern = [
-        [2, 0, 0],
-        [0, 1, 0],
+        [0, 0, 0],
+        [0, 0, 0],
         [0, 0, 0]
     ];
 
-    const board = document.getElementById("board");
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            let cell = document.createElement("div");
-            // let props = methodList(cell);
-            cell.classList.add("cell");
-            let text = pattern[i][j] === 0 ?
-                "" : pattern[i][j] === 1 ?
-                "⭕" : "❌";
-            // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#:~:text=textContent%20gets%20the%20content%20of,text%20of%20%E2%80%9Chidden%E2%80%9D%20elements.
-            // textContent gets the content of all elements, including <script> and <style> elements. 
-            //In contrast, innerText only shows “human-readable” elements
-            // cell.textContent = text; 
-            cell.innerText = text;
-            board.appendChild(cell);
+    let nextUser = 2; // X starts the game
+
+    function show(){
+        const board = document.getElementById("board");
+        board.innerHTML = ""; // rest the board
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement("div");
+                // let props = methodList(cell);
+                cell.classList.add("cell");
+                let text = pattern[i][j] === 0 ?
+                    "" : pattern[i][j] === 1 ?
+                    "⭕" : "❌";
+                // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#:~:text=textContent%20gets%20the%20content%20of,text%20of%20%E2%80%9Chidden%E2%80%9D%20elements.
+                // textContent gets the content of all elements, including <script> and <style> elements. 
+                //In contrast, innerText only shows “human-readable” elements
+                // cell.textContent = text; 
+                cell.innerText = text;
+
+                cell.addEventListener("click", () => move(i, j));
+                board.appendChild(cell);
+            }
+            board.appendChild(document.createElement("br")); // the br element makes a line break
         }
-        board.appendChild(document.createElement("br")); // the br element makes a line break
     }
+
+    function move(row, column){
+        pattern[row][column] = nextUser;
+        nextUser = 3 - nextUser;
+        show();
+    }
+
+    show();
 </script>
