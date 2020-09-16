@@ -1,0 +1,69 @@
+<style>
+    #board {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .cell {
+        margin: 0px;
+        display: inline-block;
+        height: 90px;
+        width: 90px;
+        /* width + 2*border + margin = 100px, so we can fit 3 cells in a line in a board*/
+        border: 5px solid #5ba25b;
+        /*dar sea green's monochromatic color*/
+        background-color: #8fbc8f;
+        /*dark sea green*/
+        font-size: 50px;
+        /* hack utf icon's default color, and change it to a customized one. */
+        color: transparent;
+        text-shadow: 0 0 0 #a25b7e;
+
+        line-height: 90px;
+        /*to make sure the text can be placed in the middle of the cell vertically*/
+        vertical-align: middle;
+        /* the default value is baseline*/
+        text-align: center;
+        /*the default value is left*/
+    }
+</style>
+
+<div id="board"></div>
+
+<script>
+    let methodList = (object) => {
+        let result = [];
+        for (let key in object) {
+            result.push(key);
+        }
+        return result;
+    }
+
+    // X = 2
+    // O = 1
+    // "" = 0
+    let pattern = [
+        [2, 0, 0],
+        [0, 1, 0],
+        [0, 0, 0]
+    ];
+
+    const board = document.getElementById("board");
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            let cell = document.createElement("div");
+            // let props = methodList(cell);
+            cell.classList.add("cell");
+            let text = pattern[i][j] === 0 ?
+                "" : pattern[i][j] === 1 ?
+                "⭕" : "❌";
+            // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#:~:text=textContent%20gets%20the%20content%20of,text%20of%20%E2%80%9Chidden%E2%80%9D%20elements.
+            // textContent gets the content of all elements, including <script> and <style> elements. 
+            //In contrast, innerText only shows “human-readable” elements
+            // cell.textContent = text; 
+            cell.innerText = text;
+            board.appendChild(cell);
+        }
+        board.appendChild(document.createElement("br")); // the br element makes a line break
+    }
+</script>
