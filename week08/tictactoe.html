@@ -46,9 +46,6 @@
         return result;
     }
 
-    // X = 2
-    // O = 1
-    // "" = 0
     let mapBetweenTokenAndSymbol = {
         "❌": 2,
         "⭕": 1,
@@ -63,7 +60,7 @@
         [0, 0, 0]
     ];
 
-    let nextUser = 2; // X starts the game
+    let nextUser = mapBetweenTokenAndSymbol["❌"]; // X starts the game
 
     function show(){
         const board = document.getElementById("board");
@@ -73,9 +70,7 @@
                 let cell = document.createElement("div");
                 // let props = methodList(cell);
                 cell.classList.add("cell");
-                let text = pattern[i][j] === 0 ?
-                                mapBetweenTokenAndSymbol[0] : pattern[i][j] === 1 ?
-                                mapBetweenTokenAndSymbol[1] : mapBetweenTokenAndSymbol[2];
+                let text = mapBetweenTokenAndSymbol[pattern[i][j]];
                 // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#:~:text=textContent%20gets%20the%20content%20of,text%20of%20%E2%80%9Chidden%E2%80%9D%20elements.
                 // textContent gets the content of all elements, including <script> and <style> elements. 
                 // In contrast, innerText only shows “human-readable” elements
