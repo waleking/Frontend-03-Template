@@ -1,6 +1,6 @@
 # 学习笔记
 ## 1. 实现一个TicTacToe游戏
-
+实现TicTacToe的同时复习了css的知识，DOM API的知识。
 ## 2. 实现一个带AI的TicTacToe游戏
 
 ## 3. async异步编程

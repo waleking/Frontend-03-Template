@@ -1,0 +1,122 @@
+<style>
+    #board {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .cell {
+        margin: 0px;
+        display: inline-block;
+        height: 90px;
+        width: 90px;
+        /* width + 2*border + margin = 100px, so we can fit 3 cells in a line in a board*/
+        border: 5px solid #5ba25b;
+        /*dar sea green's monochromatic color*/
+        background-color: #8fbc8f;
+        /*dark sea green*/
+        font-size: 50px;
+        /* hack utf icon's default color, and change it to a customized one. */
+        color: transparent;
+        text-shadow: 0 0 0 #a25b7e;
+
+        line-height: 90px;
+        /*to make sure the text can be placed in the middle of the cell vertically*/
+        vertical-align: middle;
+        /* the default value is baseline*/
+        text-align: center;
+        /*the default value is left*/
+    }
+
+    #result{
+        width: 300px;
+        margin: 0 auto;    
+        text-align: center;
+    }
+</style>
+
+<div id="board"></div>
+<div id="result"></div>
+
+<script>
+    let methodList = (object) => {
+        let result = [];
+        for (let key in object) {
+            result.push(key);
+        }
+        return result;
+    }
+
+    let mapBetweenTokenAndSymbol = {
+        "❌": 2,
+        "⭕": 1,
+        "": 0,
+        2: "❌",
+        1: "⭕",
+        0: ""
+    }
+    let pattern = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ];
+
+    let nextUser = mapBetweenTokenAndSymbol["❌"]; // X starts the game
+
+    function show(){
+        const board = document.getElementById("board");
+        board.innerHTML = ""; // rest the board
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                let cell = document.createElement("div");
+                // let props = methodList(cell);
+                cell.classList.add("cell");
+                let text = mapBetweenTokenAndSymbol[pattern[i][j]];
+                // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#:~:text=textContent%20gets%20the%20content%20of,text%20of%20%E2%80%9Chidden%E2%80%9D%20elements.
+                // textContent gets the content of all elements, including <script> and <style> elements. 
+                // In contrast, innerText only shows “human-readable” elements
+                // cell.textContent = text; 
+                cell.innerText = text;
+
+                const winner = checkWhoWins();
+                if(winner === null){
+                    cell.addEventListener("click", () => move(i, j));
+                } else {
+                    document.getElementById("result").innerText = `${mapBetweenTokenAndSymbol[winner]} wins`;
+                }
+                board.appendChild(cell);
+            }
+            board.appendChild(document.createElement("br")); // the br element makes a line break
+        }
+    }
+
+    function checkWhoWins(){
+        // row
+        for(let r= 0; r < 3; r++){
+            if(pattern[r][0] && pattern[r][0] === pattern[r][1] && pattern[r][1] === pattern[r][2]){
+                return pattern[r][0];
+            }
+        } 
+        // column
+        for(let c = 0; c < 3; c++){
+            if(pattern[0][c] && pattern[0][c] === pattern[1][c] && pattern[1][c] === pattern[2][c]){
+                return pattern[0][c];
+            }
+        }
+        // diagonal  
+        if(pattern[0][0] && pattern[0][0] === pattern[1][1] && pattern[1][1] === pattern[2][2]){
+            return pattern[0][0];
+        }
+        if(pattern[0][2] && pattern[0][2] === pattern[1][1] && pattern[1][1] === pattern[2][0]){
+            return pattern[0][2];
+        }
+        return null; 
+    }
+
+    function move(row, column){
+        pattern[row][column] = nextUser;
+        nextUser = 3 - nextUser;
+        show();
+    }
+
+    show();
+</script>
