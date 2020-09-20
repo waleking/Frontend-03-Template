@@ -1,0 +1,72 @@
+<style>
+    div {
+        background-color: gray;
+        display: inline-block;
+        margin: 30px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+    }
+
+    .green.light {
+        background-color: green;
+    }
+
+    .yellow.light {
+        background-color: yellow;
+    }
+
+    .red.light {
+        background-color: red;
+    }
+</style>
+
+<div class="green"></div>
+<div class="yellow"></div>
+<div class="red"></div>
+
+<script>
+    function green(){
+        var lights = document.getElementsByTagName("div");
+        for(let i = 0; i < lights.length; i++){
+            lights[i].classList.remove("light");
+            if(lights[i].className === "green"){
+                lights[i].classList.add("light");
+            }
+        }
+    }
+    function red(){
+        var lights = document.getElementsByTagName("div");
+        for(let i = 0; i < lights.length; i++){
+            lights[i].classList.remove("light");
+            if(lights[i].className === "red"){
+                lights[i].classList.add("light");
+            }
+        }
+    }
+    function yellow(){
+        var lights = document.getElementsByTagName("div");
+        for(let i = 0; i < lights.length; i++){
+            lights[i].classList.remove("light");
+            if(lights[i].className === "yellow"){
+                lights[i].classList.add("light");
+            }
+        }
+    }
+    // 绿灯亮1秒，黄灯亮0.2秒，红灯亮0.5秒 
+    // 嵌套了太多的函数，这种现象被Node工程师称为回调地狱callback-hell
+    // 增加了程序的嵌套层级，影响程序的运行效率，以及可读性
+    function go(){
+        green();
+        setTimeout(function(){
+            yellow();
+            setTimeout(function(){
+                red();
+                setTimeout(function(){
+                    go();
+                }, 500);
+            }, 200);
+        }, 1000);
+    }
+    go();
+</script>
