@@ -10,9 +10,10 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false); // show the loading process, if we are waiting for the json data
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [postsPerPage] = useState(10);
 
   const fetchPosts = async () => {
+    console.log("fetch data");
     setLoading(true);
     const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
     setPosts(res.data);
@@ -21,9 +22,9 @@ const App = () => {
 
   useEffect(() => {
     fetchPosts();// NOTE: cannot use keyword 'await' outside an async function.
-  }, []); // why leave a blank square brackets here? 
+  }, []); // TODO: why leave a blank square brackets here? 
 
-  console.log(posts); // why it's printed several times when refreshing the webpage? 
+  // console.log(posts); // why it's printed several times when refreshing the webpage? 
 
   // Get current posts which range is [indexOfFirstPost, indexOfLastPost). NOTE: the 
   // indexOfLastPost may be beyond the scope of the array of posts, but the slice function
@@ -32,11 +33,16 @@ const App = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
+  // Change page
+  function paginate(number){
+    setCurrentPage(number);
+  }
+
   return (
     <div className="container mt-5">
       <h1 className="text-primary mb-3">My Blog</h1>
       <Posts posts={currentPosts} loading={loading} />
-      <Pagination postsPerPage={postsPerPage} totalPosts={posts.length}/>
+      <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}/>
     </div>
   );
 };
