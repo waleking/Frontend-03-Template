@@ -55,9 +55,9 @@
         0: ""
     }
     let pattern = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]
+        0, 0, 0,
+        0, 0, 0,
+        0, 0, 0
     ];
 
     let nextUser = mapBetweenTokenAndSymbol["❌"]; // X starts the game
@@ -70,7 +70,7 @@
                 let cell = document.createElement("div");
                 // let props = methodList(cell);
                 cell.classList.add("cell");
-                let text = mapBetweenTokenAndSymbol[pattern[i][j]];
+                let text = mapBetweenTokenAndSymbol[pattern[i*3+j]];
                 // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#:~:text=textContent%20gets%20the%20content%20of,text%20of%20%E2%80%9Chidden%E2%80%9D%20elements.
                 // textContent gets the content of all elements, including <script> and <style> elements. 
                 // In contrast, innerText only shows “human-readable” elements
@@ -90,17 +90,18 @@
     }
 
     function clone(pattern){
-        return JSON.parse(JSON.stringify(pattern)); // the easiest way to deep clone an object
+        // return JSON.parse(JSON.stringify(pattern)); // the easiest way to deep clone an object
+        return Object.create(pattern); //TODO: 此种方法因为使用原型链，所以节省空间？
     }
 
     function willWin(pattern, nextUser){
         for(let r = 0; r < 3; r++){
             for(let c = 0; c < 3; c++){
-                if(pattern[r][c]){ // the cell is already occupied, so we do not play in this cell
+                if(pattern[r*3+c]){ // the cell is already occupied, so we do not play in this cell
                     continue;
                 } else {
                     let futurePattern = clone(pattern);
-                    futurePattern[r][c] = nextUser;
+                    futurePattern[r*3+c] = nextUser;
                     if(checkWhoWins(futurePattern) === nextUser){
                         return [r, c]; 
                     }
@@ -121,13 +122,13 @@
 
         let score = -2;
         let point = null;
-        for(let r = 0; r < 3; r++){
+        outer: for(let r = 0; r < 3; r++){
             for(let c = 0; c < 3; c++){                    
                 let tmpPattern = clone(pattern);
-                if(tmpPattern[r][c]){
+                if(tmpPattern[r*3+c]){
                     continue;
                 } else {
-                    tmpPattern[r][c] = player;
+                    tmpPattern[r*3+c] = player;
                     let rivalFutureScore = bestChoice(tmpPattern, 3 - player).score;
 
                     // if the rival wins (rival's score = 1), then we will fail (our score = -1). 
@@ -135,6 +136,9 @@
                     if(ourFutureScore > score ){
                         score = ourFutureScore;
                         point = [r, c];
+                    }
+                    if(score === 1){ 
+                        break outer; // early stop, or win-lost pruning
                     }
                 }
             }
@@ -148,28 +152,28 @@
     function checkWhoWins(pattern){
         // row
         for(let r= 0; r < 3; r++){
-            if(pattern[r][0] && pattern[r][0] === pattern[r][1] && pattern[r][1] === pattern[r][2]){
-                return pattern[r][0];
+            if(pattern[r*3+0] && pattern[r*3+0] === pattern[r*3+1] && pattern[r*3+1] === pattern[r*3+2]){
+                return pattern[r*3+0];
             }
         } 
         // column
         for(let c = 0; c < 3; c++){
-            if(pattern[0][c] && pattern[0][c] === pattern[1][c] && pattern[1][c] === pattern[2][c]){
-                return pattern[0][c];
+            if(pattern[0*3+c] && pattern[0*3+c] === pattern[1*3+c] && pattern[1*3+c] === pattern[2*3+c]){
+                return pattern[0*3+c];
             }
         }
         // diagonal  
-        if(pattern[0][0] && pattern[0][0] === pattern[1][1] && pattern[1][1] === pattern[2][2]){
-            return pattern[0][0];
+        if(pattern[0*3+0] && pattern[0*3+0] === pattern[1*3+1] && pattern[1*3+1] === pattern[2*3+2]){
+            return pattern[0*3+0];
         }
-        if(pattern[0][2] && pattern[0][2] === pattern[1][1] && pattern[1][1] === pattern[2][0]){
-            return pattern[0][2];
+        if(pattern[0*3+2] && pattern[0*3+2] === pattern[1*3+1] && pattern[1*3+1] === pattern[2*3+0]){
+            return pattern[0*3+2];
         }
         return null; 
     }
 
     function move(row, column){
-        pattern[row][column] = nextUser;
+        pattern[row*3+column] = nextUser;
         if(willWin(pattern, nextUser)){
             console.log(`${mapBetweenTokenAndSymbol[nextUser]} will win`);
         }
