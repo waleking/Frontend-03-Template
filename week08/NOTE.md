@@ -3,6 +3,9 @@
 实现TicTacToe的同时复习了css的知识，DOM API的知识。
 ## 2. 实现一个带AI的TicTacToe游戏
 
+[tictactoe_ai2.html](https://github.com/waleking/Frontend-03-Template/blob/master/week08/tictactoe_ai2.html)代码的效果如下：
+![alt text](https://github.com/waleking/Frontend-03-Template/blob/master/week08/tic_tac_toe_ai.gif?raw=true)
+
 ## 3. async异步编程
 JavaScript中没有同步的等待时间的机制。JavaScript的异步机制有三种：
 - callback
