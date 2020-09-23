@@ -77,7 +77,7 @@
                 // cell.textContent = text; 
                 cell.innerText = text;
 
-                const winner = checkWhoWins();
+                const winner = checkWhoWins(pattern);
                 if(winner === null){
                     cell.addEventListener("click", () => move(i, j));
                 } else {
@@ -89,7 +89,28 @@
         }
     }
 
-    function checkWhoWins(){
+    function clone(pattern){
+        return JSON.parse(JSON.stringify(pattern)); // the easiest way to deep clone an object
+    }
+
+    function willWin(pattern, nextUser){
+        for(let r = 0; r < 3; r++){
+            for(let c = 0; c < 3; c++){
+                if(pattern[r][c]){ // the cell is already occupied, so we do not play in this cell
+                    continue;
+                } else {
+                    let futurePattern = clone(pattern);
+                    futurePattern[r][c] = nextUser;
+                    if(checkWhoWins(futurePattern) === nextUser){
+                        return [r, c]; 
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    function checkWhoWins(pattern){
         // row
         for(let r= 0; r < 3; r++){
             if(pattern[r][0] && pattern[r][0] === pattern[r][1] && pattern[r][1] === pattern[r][2]){
@@ -114,6 +135,9 @@
 
     function move(row, column){
         pattern[row][column] = nextUser;
+        if(willWin(pattern, nextUser)){
+            console.log(`${mapBetweenTokenAndSymbol[nextUser]} will win`);
+        }
         nextUser = 3 - nextUser;
         show();
     }
