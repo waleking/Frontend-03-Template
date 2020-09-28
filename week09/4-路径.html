@@ -18,6 +18,9 @@
    .searched {
        background-color: pink;
    }
+   .onpath{
+       background-color: purple;
+   }
 </style>
 
 <div id="container"></div>
@@ -118,23 +121,21 @@
 
         while(queue.length>0){
             let [x, y] = queue.shift();
-            await sleep(1);
             container.children[x*columnNum + y].classList.add("searched");
 
-            // console.log(x,y);
             if(x === end[0] && y === end[1]){
                 // get path
-                const path = [end];
+                const path = [];
 
-                // [_x, _y] is a inner node on the path
-                let [_x, _y] = table[x*columnNum+y];
-                while(_x !== start[0] || _y !== start[1]){
-                    path.unshift([_x, _y]);
-                    [_x, _y] = table[_x*columnNum+_y];
+                while(x !== start[0] || y !== start[1]){
+                    path.push([x, y]);
+                    container.children[x*columnNum + y].classList.add("onpath");
+                    await sleep(30);
+                    [x, y] = table[x*columnNum+y];
                 }
-                path.unshift(start);
-                console.log(JSON.stringify(path));
-                return true;
+                container.children[x*columnNum + y].classList.add("onpath");
+                path.push(start);
+                return path;
             }
             let pre = [x, y];
             insert(x - 1, y, pre);
@@ -149,7 +150,7 @@
             insert(x + 1, y + 1, pre);
         }
 
-        return false;
+        return null;
     }
 
     // console.log(path(map, [0, 0], [99, 99]));
