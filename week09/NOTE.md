@@ -29,3 +29,6 @@ JavaScript中的数组是天然的队列和栈，有两组方法：shift（弹�
 当使用队列的时候：使用push和shift；或者unshift和pop。
 
 代码见[2-广度优先搜索.html](2-广度优先搜索.html)。
+
+## 可视化
+代码见[3-可视化.html](3-可视化.html)。
