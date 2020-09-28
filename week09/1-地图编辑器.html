@@ -1,0 +1,82 @@
+<style>
+   .cell {
+       width: 6px;
+       height: 6px;
+       /* width: 20px; */
+       /* height: 20px; */
+       display: inline-block;
+       border-right: 1px solid white;
+       border-bottom: 1px solid white;
+       background-color: gray;
+   } 
+   .cell-black {
+       background-color: black;
+   }
+</style>
+
+<div id="container"></div>
+<button onclick="window.localStorage['map'] = JSON.stringify(map)">save</button>
+<div id="mouseUpOrDown"></div>
+<div id="wallOrEraser"></div>
+
+<script>
+    let rowNum = 100;
+    let columnNum = 100;
+
+    // In map, the value 0 means not occupied, while the value 1 means the cell is occupied. 
+    let map = window.localStorage["map"] ? JSON.parse(window.localStorage["map"]) : Array(rowNum*columnNum).fill(0);
+
+    const container = document.getElementById("container");
+
+    let eraser = false;
+    let mousedown = false;
+
+    document.addEventListener("mousedown", (e)=>{
+        document.getElementById("mouseUpOrDown").innerText=`mouse down`;
+        mousedown = true;
+        if(e.which === 3){ // right mouse button
+            document.getElementById("wallOrEraser").innerText=`eraser`;
+            eraser = true;
+        } else { // left mouse button
+            document.getElementById("wallOrEraser").innerText=`wall`;
+            eraser = false;
+        }
+    });
+
+    document.addEventListener("mouseup", ()=>{
+        document.getElementById("mouseUpOrDown").innerText="mouse up";
+        document.getElementById("wallOrEraser").innerText="";
+        mousedown = false;
+        eraser = false;
+    });
+
+    document.addEventListener("contextmenu", (e)=>{ // 防止弹出菜单
+        e.preventDefault();
+    })
+
+    const cellClick = (i, j) => {
+        if(mousedown){
+            if(eraser){
+                event.target.classList.remove("cell-black");
+                map[i*columnNum + j] = 0;
+            } else {
+                event.target.classList.add("cell-black");
+                map[i*columnNum + j] = 1;
+            }
+        }
+    }
+
+
+    for(let i = 0; i < rowNum; i++){
+        for(let j = 0; j < columnNum; j++){
+            let cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.addEventListener("mousemove", () => cellClick(i, j));
+            if(map[i*columnNum+j] === 1){
+                cell.classList.add("cell-black");
+            }
+            container.appendChild(cell);
+        }
+        container.appendChild(document.createElement("br"));
+    }
+</script>
