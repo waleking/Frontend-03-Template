@@ -1,0 +1,156 @@
+<style>
+   .cell {
+       width: 6px;
+       height: 6px;
+       /* width: 20px; */
+       /* height: 20px; */
+       display: inline-block;
+       border-right: 1px solid white;
+       border-bottom: 1px solid white;
+       background-color: gray;
+   } 
+   .cell-black {
+       background-color: black;
+   }
+   #container {
+       width: 700px;
+   }
+   .searched {
+       background-color: pink;
+   }
+</style>
+
+<div id="container"></div>
+<button onclick="window.localStorage['map'] = JSON.stringify(map)">save</button>
+<div id="mouseUpOrDown"></div>
+<div id="wallOrEraser"></div>
+
+<script>
+    let rowNum = 100;
+    let columnNum = 100;
+    const cellStateDict = {
+        0: "empty",
+        1: "wall", 
+        2: "searched",
+        "empty": 0,
+        "wall": 1,
+        "searched": 2
+    }
+
+    // In map, the value 0 means not occupied, while the value 1 means the cell is occupied, 
+    // and the value 2 indicates the cell is searched in our path search algorithm.
+    let map = window.localStorage["map"] ? JSON.parse(window.localStorage["map"]) : Array(rowNum*columnNum).fill(cellStateDict["empty"]);
+
+    const container = document.getElementById("container");
+
+    let eraser = false;
+    let mousedown = false;
+
+    document.addEventListener("mousedown", (e)=>{
+        document.getElementById("mouseUpOrDown").innerText=`mouse down`;
+        mousedown = true;
+        if(e.which === 3){ // right mouse button
+            document.getElementById("wallOrEraser").innerText=`eraser`;
+            eraser = true;
+        } else { // left mouse button
+            document.getElementById("wallOrEraser").innerText=`wall`;
+            eraser = false;
+        }
+    });
+
+    document.addEventListener("mouseup", ()=>{
+        document.getElementById("mouseUpOrDown").innerText="mouse up";
+        document.getElementById("wallOrEraser").innerText="";
+        mousedown = false;
+        eraser = false;
+    });
+
+    document.addEventListener("contextmenu", (e)=>{ // 防止弹出菜单
+        e.preventDefault();
+    })
+
+    const sleep = (t) => {
+        return new Promise((resolve) => {
+            setTimeout(resolve, t);
+        })
+    }
+
+    const cellClick = (i, j) => {
+        if(mousedown){
+            if(eraser){
+                event.target.classList.remove("cell-black");
+                map[i*columnNum + j] = cellStateDict["empty"];
+            } else {
+                event.target.classList.add("cell-black");
+                map[i*columnNum + j] = cellStateDict["wall"];
+            }
+        }
+    }
+
+
+    for(let i = 0; i < rowNum; i++){
+        for(let j = 0; j < columnNum; j++){
+            let cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.addEventListener("mousemove", () => cellClick(i, j));
+            if(map[i*columnNum+j] === cellStateDict["wall"]){
+                cell.classList.add("cell-black");
+            }
+            container.appendChild(cell);
+        }
+    }
+
+    async function findPath(map, start, end){
+        let table = Object.create(map);
+        let queue = [start];
+
+        function insert(x, y, pre){
+            if(x < 0 || x>= rowNum || y < 0 || y>=columnNum){
+                return ;
+            }
+            if(map[x*columnNum + y] === cellStateDict["wall"] 
+                || table[x*columnNum + y]){
+                return ;
+            }
+            table[x*columnNum + y] = pre;
+            queue.push([x, y]);
+        }
+
+        while(queue.length>0){
+            let [x, y] = queue.shift();
+            await sleep(1);
+            container.children[x*columnNum + y].classList.add("searched");
+
+            // console.log(x,y);
+            if(x === end[0] && y === end[1]){
+                // get path
+                const path = [end];
+
+                // [_x, _y] is a inner node on the path
+                let [_x, _y] = table[x*columnNum+y];
+                while(_x !== start[0] || _y !== start[1]){
+                    path.unshift([_x, _y]);
+                    [_x, _y] = table[_x*columnNum+_y];
+                }
+                path.unshift(start);
+                console.log(JSON.stringify(path));
+                return true;
+            }
+            let pre = [x, y];
+            insert(x - 1, y, pre);
+            insert(x + 1, y, pre);
+            insert(x, y - 1, pre);
+            insert(x, y + 1, pre);
+
+            // 斜向
+            insert(x - 1, y - 1, pre);
+            insert(x - 1, y + 1, pre);
+            insert(x + 1, y - 1, pre);
+            insert(x + 1, y + 1, pre);
+        }
+
+        return false;
+    }
+
+    // console.log(path(map, [0, 0], [99, 99]));
+</script>
