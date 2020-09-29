@@ -29,7 +29,7 @@
 <div id="wallOrEraser"></div>
 
 <script>
-class Sorted{
+class Sorted{//TODO 实现二叉堆
     constructor(data, compare){
         this.data = data.slice();
         this.compare = compare || ((a, b) => a-b ); // what's an specific example of the function compare?
@@ -57,6 +57,10 @@ class Sorted{
 
     give(v){
         this.data.push(v);
+    }
+
+    get length(){
+        return this.data.length;
     }
 }
 
@@ -136,8 +140,13 @@ class Sorted{
     }
 
     async function findPath(map, start, end){
+        let queue = new Sorted([start], (a,b) => distance(a) - distance(b));
         let table = Object.create(map);
-        let queue = [start];
+
+        function distance(point){
+            // We want the distance from the current point to the end, under the Euclidean metric.  
+            return (point[0] - end[0]) ** 2 + (point[1] - end[1]) ** 2;
+        }
 
         function insert(x, y, pre){
             if(x < 0 || x>= rowNum || y < 0 || y>=columnNum){
@@ -147,12 +156,13 @@ class Sorted{
                 || table[x*columnNum + y]){
                 return ;
             }
-            table[x*columnNum + y] = pre;
-            queue.push([x, y]);
+            table[x*columnNum + y] = pre; // TODO，更好的pre
+            queue.give([x, y]);
         }
 
         while(queue.length>0){
-            let [x, y] = queue.shift();
+            let [x, y] = queue.take();
+            console.log(x, y);
             container.children[x*columnNum + y].classList.add("searched");
 
             if(x === end[0] && y === end[1]){
