@@ -1,0 +1,13 @@
+.container {
+    margin: 0 auto;
+    max-width: 750px;
+    padding: 1rem; // Relative to font-size of the root element, 18px in our case
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; // can fit to longer content, which is more than 100vh
+    // justify-content: space-between; // the second implementation method
+}
+
+.content {
+    flex: 1;
+}
