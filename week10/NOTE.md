@@ -31,5 +31,9 @@
 ## 2. 使用LL算法构建AST | 正则表达式
 正则表达式的exec(source)可以不断扫描原字符串中的内容。如果匹配到了source中的某个位置，进一步判断该位置匹配到了正则表达式中的哪一个group，然后根据group输出该token的类别（Number, Whitespace, LineTerminator, *, /, +, -)。代码可见[1-正则表达式.html](1-正则表达式.html)，其运行结果可见[1-正则表达式.log](1-正则表达式.log)。
 ## 3. 使用LL算法构建AST | LL词法分析
+在[1-正则表达式.html](1-正则表达式.html)的基础上，编写了[2-词法分析.html](2-词法分析.html)，增加了两项内容：
+1. 增加一个判断：如果匹配出来的长度和前进的长度不一致。使用regexp.lastIndex，每次用新生成的lastIndex和旧的lastIndex做比较，如果差值大于匹配出来的长度，那么就认为存在我们不认识的格式。TODO：此处最好有一个例子来说明?
+2. 使用yield关键字，将函数变为generator。根据[定义](https://hackernoon.com/javascript-es6-you-dont-really-need-to-learn-generators-96aa2e9114fa)，And in a generator function, the yield keyword pauses function execution and returns (yields) a value.
+留有一个疑问：为什么说这么处理能让我们的代码变成完全异步的形式？
 ## 4. 使用LL算法构建AST | LL语法分析 1
 ## 5. 使用LL算法构建AST | LL语法分析 2
