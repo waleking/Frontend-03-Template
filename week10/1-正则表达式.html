@@ -1,0 +1,26 @@
+<script>
+    var regexp = /([0-9\.]+)|([ \t]+)|([\r\n]+)|(\*)|(\/)|(\+)|(\-)/g;
+    // match group 1: Numbers, match group 2: Whitespace
+    // match group 3: LineTerminator, match group 4: *
+
+    var dictionary = ["Numbers", "Whitespace", "LineTerminator", "*", "/", "+", "-"];
+
+    function tokenize(source){
+        var result = null;
+        while(true){
+            result = regexp.exec(source);
+            if(!result){
+               break; 
+            } 
+
+            for(let i = 1; i<= dictionary.length; i++){
+                if(result[i]){
+                    console.log(`${dictionary[i-1]}: ${result[i]}`);
+                }
+            }
+            console.log(result);
+        }
+    }
+
+    tokenize("1024 + 10 * 25");
+</script>

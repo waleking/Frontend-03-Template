@@ -1,0 +1,18 @@
+1-正则表达式.html:18 Numbers: 1024
+1-正则表达式.html:21 (8) ["1024", "1024", undefined, undefined, undefined, undefined, undefined, undefined, index: 0, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 Whitespace:  
+1-正则表达式.html:21 (8) [" ", undefined, " ", undefined, undefined, undefined, undefined, undefined, index: 4, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 +: +
+1-正则表达式.html:21 (8) ["+", undefined, undefined, undefined, undefined, undefined, "+", undefined, index: 5, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 Whitespace:  
+1-正则表达式.html:21 (8) [" ", undefined, " ", undefined, undefined, undefined, undefined, undefined, index: 6, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 Numbers: 10
+1-正则表达式.html:21 (8) ["10", "10", undefined, undefined, undefined, undefined, undefined, undefined, index: 7, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 Whitespace:  
+1-正则表达式.html:21 (8) [" ", undefined, " ", undefined, undefined, undefined, undefined, undefined, index: 9, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 *: *
+1-正则表达式.html:21 (8) ["*", undefined, undefined, undefined, "*", undefined, undefined, undefined, index: 10, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 Whitespace:  
+1-正则表达式.html:21 (8) [" ", undefined, " ", undefined, undefined, undefined, undefined, undefined, index: 11, input: "1024 + 10 * 25", groups: undefined]
+1-正则表达式.html:18 Numbers: 25
+1-正则表达式.html:21 (8) ["25", "25", undefined, undefined, undefined, undefined, undefined, undefined, index: 12, input: "1024 + 10 * 25", groups: undefined]
