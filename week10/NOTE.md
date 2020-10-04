@@ -28,6 +28,7 @@
     | <MultiplicativeExpression>*<Number>
     | <MultiplicativeExpression>/<Number>
 ```
+
 ## 2. 使用LL算法构建AST | 正则表达式
 正则表达式的exec(source)可以不断扫描原字符串中的内容。如果匹配到了source中的某个位置，进一步判断该位置匹配到了正则表达式中的哪一个group，然后根据group输出该token的类别（Number, Whitespace, LineTerminator, *, /, +, -)。代码可见[1-正则表达式.html](1-正则表达式.html)，其运行结果可见[1-正则表达式.log](1-正则表达式.log)。
 ## 3. 使用LL算法构建AST | LL词法分析
@@ -37,3 +38,65 @@
 留有一个疑问：为什么说这么处理能让我们的代码变成完全异步的形式？
 ## 4. 使用LL算法构建AST | LL语法分析 1
 ## 5. 使用LL算法构建AST | LL语法分析 2
+按照产生式写递归函数，在递归过程中对source[]数组进行规约操作。其中，需要将单独的一个Number看做是特殊的乘法。
+
+`10 + 25 * 5`最终解析为如下AST语法分析树的形式：
+```
+{
+  "type": "Expression",
+  "children": [
+    {
+      "type": "AdditiveExpression",
+      "operator": "+",
+      "children": [
+        {
+          "type": "AdditiveExpression",
+          "children": [
+            {
+              "type": "MultiplicativeExpression",
+              "children": [
+                {
+                  "type": "Number",
+                  "value": "10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "+",
+          "value": "+"
+        },
+        {
+          "type": "MultiplicativeExpression",
+          "operator": "*",
+          "children": [
+            {
+              "type": "MultiplicativeExpression",
+              "children": [
+                {
+                  "type": "Number",
+                  "value": "25"
+                }
+              ]
+            },
+            {
+              "type": "*",
+              "value": "*"
+            },
+            {
+              "type": "Number",
+              "value": "5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "EOF"
+    }
+  ]
+}
+```
+
+学习了词法分析和LL语法分析技术，很多复杂的产生式都能进行解析了。

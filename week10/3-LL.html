@@ -39,17 +39,52 @@
     }
 
     let source = [];
-    for(let token of tokenize("10 * 25 * 5")){
+    for(let token of tokenize("10 + 25 * 5")){
         if(token.type!=='Whitespace' && token.type!=='LineTerminator')
             source.push(token);
     }
 
-    function expression(tokens){
-
+    function expression(source){
+        if(source[0].type==="AdditiveExpression" && source[1] && source[1].type==="EOF"){
+            let node = {
+                type: "Expression",
+                children: [source.shift(), source.shift()]
+            }
+            source.unshift(node);
+            return node; // not return source, because we want a tree instead of a list
+        }
+        additiveExpression(source);
+        return expression(source);
     }
 
     function additiveExpression(source){
-
+        if(source[0].type === "MultiplicativeExpression"){
+            let node = {
+                type: "AdditiveExpression",
+                children: [source[0]]
+            }
+            source[0] = node;
+            return additiveExpression(source);
+        }
+        if(source[0].type === "AdditiveExpression" && source[1] && (source[1].type==="+"|| source[1].type==="-")){
+            let node = {
+                type: "AdditiveExpression",
+                operator: source[1].type,
+                children: [] 
+            }
+            node.children.push(source.shift());
+            node.children.push(source.shift());
+            multiplicativeExpression(source);
+            node.children.push(source.shift());
+            source.unshift(node);
+            return additiveExpression(source);
+        }
+        // it's a default else branch
+        if(source[0].type==="AdditiveExpression"){
+            return source[0]; // remove EOF in the final result
+        }
+        multiplicativeExpression(source);
+        return additiveExpression(source);
     }
 
     function multiplicativeExpression(source){
@@ -64,7 +99,7 @@
         if(source[0].type === "MultiplicativeExpression" && source[1] && (source[1].type==="*" || source[1].type==="/")){
             let node = {
                 type: "MultiplicativeExpression",
-                operator: "*",
+                operator: source[1].type,
                 children: [] 
             }
             node.children.push(source.shift());
@@ -75,11 +110,11 @@
         }
         // it's a default else branch
         if(source[0].type==="MultiplicativeExpression"){
-            return source[0];
+            return source[0]; // remove EOF in the final result
         }
 
         return multiplicativeExpression(source);//It's never be called?
     }
 
-    console.log(multiplicativeExpression(source));
+    console.log(JSON.stringify(expression(source)));
 </script>
