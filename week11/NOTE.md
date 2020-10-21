@@ -18,7 +18,7 @@
   - 字符串多层级结构分析
   - HTML解析用到了stack，其实也是LR方法
 ## 2. 字符串分析算法 | 字典树
-构造字典树(Trie Tree)
+构造字典树(Trie Tree)，代码为[1-字典树.html](1-字典树.html)。
 ```javascript
 <script>
     class Trie {
@@ -101,4 +101,17 @@
 ```
 
 ## 3. 字符串分析算法 | KMP字符串模式匹配算法
+KMP算法利用了模式串里面自身可能有重复性这一特点。因此在KMP算法刚开始的时候，先计算模式串的自重复性。
+使用表格记录模式串中的自重复性。跳转表格？
+
+KMP算法大致分为两部分：1.求跳转表格；2.进行真正的匹配。
+代码为[kmp.js](kmp.js)。
 ## 4. 字符串分析算法 | Wildcard
+一个wildcar可视作多个KMP组成。例如：`ab*cd*abc*ad`中有开头ab和结尾ad，那么相当于在字符串中间找cd和abc（保持顺序）。
+
+另一个处理思路是用正则来处理多个KMP的段。
+头尾进行一般的完全匹配，中间的部分使用正则表达式进行匹配，其中的?号通配符可以先行替换，替换为全部字符[\s\S]。
+需要注意的是：如果index超出数组的范围，那么返回的是undefined。通过检查`(void 0)===(void 0)`发现恒为`true`。
+那么我们就可以在遍历数组的时候不用太担心数组越界的问题，事实上`if(source[source.length - indexFromTail] !== pattern[pattern.length - indexFromTail] && pattern[pattern.length - indexFromTail]!=="?")`这个条件语句存在数组越界的情况，例如indexFromTail=0，那么会访问source[source.length]！但是因为source[source.length]是undefined，同时pattern[pattern.length]也是undefined，那么越界时恒为true，不影响最终结果。
+
+代码为[wildcard.js](wildcard.js)。
