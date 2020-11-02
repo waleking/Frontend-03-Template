@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from '../components/layout';
 import { graphql, useStaticQuery, Link } from 'gatsby';
+import blogStyle from './blog.module.scss';
 
 // Goal: show lists of posts on blog page.
 //
@@ -40,9 +41,9 @@ const BlogPage = () => {
     return (
         <Layout>
             <h1>Blog</h1>
-            <ol>
-            {markdowns.map(markdown => (
-                    <li>
+            <ol className={blogStyle.posts}>
+            {markdowns.map((markdown, index) => (
+                    <li key={index} className={blogStyle.post}>
                         <Link to={`/blog/${markdown.node.fields.slug}`}>
                             <h2>{markdown.node.frontmatter.title}</h2>
                             <p>{markdown.node.frontmatter.date}</p>
