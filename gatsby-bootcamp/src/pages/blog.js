@@ -1,6 +1,6 @@
+import { graphql, Link, useStaticQuery } from 'gatsby';
 import React from 'react';
 import { Layout } from '../components/layout';
-import { graphql, useStaticQuery, Link } from 'gatsby';
 import blogStyle from './blog.module.scss';
 
 // Goal: show lists of posts on blog page.
