@@ -6,3 +6,7 @@
 
 代码见[proxy_basic_usage.html](proxy_basic_usage.html)。
 
+## 模仿reactive实现原理1
+proxy设置get和set，可以访问和改变被代理的object。
+代码见[reactive1.html](reactive1.html)。
+
