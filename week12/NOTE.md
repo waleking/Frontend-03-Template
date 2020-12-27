@@ -10,3 +10,9 @@
 proxy设置get和set，可以访问和改变被代理的object。
 代码见[reactive1.html](reactive1.html)。
 
+## 模仿reactive实现原理2
+增加一个effect函数，其中effect函数的参数是一个callback函数。
+设置了一个全局的callbacks数组，在effect函数中将callback添加到callbacks数组中。
+代码见[reactive2.html](reactive2.html)。
+但是这里，为什么要用effect函数，这是一个问题！
+TODO：effect的作用是什么？
